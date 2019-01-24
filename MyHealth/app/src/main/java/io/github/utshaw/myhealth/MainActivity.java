@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        mAPIService = ApiUtils.getAPIService();
+        mAPIService = ApiUtils.getAPIService();
 
         FirebaseApp.initializeApp(this);
 
@@ -173,7 +173,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //sendPost(mobile, token);
         //}
         uploadData();
+
     }
+
+
+
 
     private void onSignedOutCleanup() {
 
@@ -181,45 +185,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void sendPost(String mobile, String token) {
-//        mAPIService.saveLogin(mobile, token).enqueue(new Callback<Login>() {
-//            @Override
-//            public void onResponse(Call<Login> call, Response<Login> response) {
-//
-//                if(response.isSuccessful()) {
-//                    showResponse(response.body().toString());
-//                    Log.i("Utshaw", "post submitted to API." + response.body().toString());
-//                }else{
-//                    if(response != null){
-//                        Log.i("Utshaw", "post unsuccessful to API. response NULL" );
-//                    }else {
-//                        Log.i("Utshaw", "post unsuccessful to API. response NOT NULL" );
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Login> call, Throwable t) {
-//                Log.e("Utshaw", "Unable to submit post to API.");
-//            }
-//        });
-
-        APIService apiService = RetrofitClient.getClient().create(APIService.class);
-
-        Call<Login> call = apiService.saveLogin(mobile,token);
-        call.enqueue(new Callback<Login>() {
+        mAPIService.saveLogin(mobile, token).enqueue(new Callback<Login>() {
             @Override
-            public void onResponse(Call<Login>call, Response<Login> response) {
-                String movies = response.body().getStatus();
-                Log.d("DEBUG", "Number of movies received: " + movies);
+            public void onResponse(Call<Login> call, Response<Login> response) {
+
+                if(response.isSuccessful()) {
+                    showResponse(response.body().toString());
+                    Log.i("Utshaw", "post submitted to API." + response.body().toString());
+                }else{
+                    if(response != null){
+                        Log.i("Utshaw", "post unsuccessful to API. response NULL" );
+                    }else {
+                        Log.i("Utshaw", "post unsuccessful to API. response NOT NULL" );
+                    }
+
+                }
             }
 
             @Override
-            public void onFailure(Call<Login>call, Throwable t) {
-                // Log error here since request failed
-                Log.e("DEBUG", t.toString());
+            public void onFailure(Call<Login> call, Throwable t) {
+                Log.e("Utshaw", "Unable to submit post to API.");
             }
         });
+
+
     }
 
     public void showResponse(String response) {
