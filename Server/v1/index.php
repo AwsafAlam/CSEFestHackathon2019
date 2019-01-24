@@ -74,8 +74,11 @@ $app->post('/userlogin', function() use ($app)  {
     $arrRtn['status'] = 'success'; //Just return the user name for reference
     $arrRtn['token'] = bin2hex(openssl_random_pseudo_bytes(28)); //generate a random token
     // $arrRtn['token'] = $token; //generate a random token
-
-  echoRespnse(201,$arrRtn);
+    $strings="INSERT INTO user(user_id,token,mobile)  VALUES (" . "NULL". "," . "'". $token . "'". "," . "'". $mobile . "'". ")";
+  
+    $result = $conn->query($strings);
+    // echo $strings;
+    echoRespnse(201,$arrRtn);
            
  });
 
