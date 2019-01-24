@@ -14,6 +14,9 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,23 +54,21 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("ApiCall Response=", response);
+                Log.d("ApiCall Response=", response);
                 String dataInfo = "";
                 //pbar.setVisibility(View.INVISIBLE);
                 //TODO: save token here
                 if (response != null) {
-                    /*try {
+                    try {
                         JSONObject jsonObj = new JSONObject(response);
-                        jSongArray = jsonObj.getJSONArray(TAG_EMPLOYEE);
-                        JSONObject oneObject = jSongArray.getJSONObject(0);
-                        sDataError = oneObject.getString(TAG_DATA_ERROR)
-                                .trim();
-                        dataInfo = oneObject.getString("dataInfo")
-                                .trim();
+
+                        String token = jsonObj.getString("token");
+                        Log.d("ApiCalltok ", "Token : "+token);
+                        tokenManager.saveToken(token);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }*/
+                    }
                 }
                 else {
                     Log.e("ApiCall", "Couldn't get any data from the url");
@@ -87,8 +88,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 Map<String, String> params = new HashMap<>();
                 //oneObject = new JSONObject();
-
-
 
                 //params.put(TAG_JOIN_DATE, sJoinDate);
                 //params.put(TAG_JOIN_DATE_IN_CURRENT_POSITION, sJoinDateInCurPosition);
