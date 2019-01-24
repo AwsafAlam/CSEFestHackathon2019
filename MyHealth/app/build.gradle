@@ -19,6 +19,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.facebook.android:account-kit-sdk:4.+'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.firebaseui:firebase-ui-auth:4.2.0'
@@ -33,8 +35,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.6.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     implementation 'com.google.android.gms:play-services-fitness:15.0.1'
-    compile 'com.android.volley:volley:1.0.0'
-
+    implementation 'com.android.volley:volley:1.0.0'
 
     //implementation 'com.google.android.gms:play-services-auth:16.0.1'
     //implementation 'com.google.android.gms:play-services-base:16.0.1'

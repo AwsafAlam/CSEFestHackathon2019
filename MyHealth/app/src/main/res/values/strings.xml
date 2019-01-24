@@ -16,5 +16,8 @@
     <string name="my_profile">some</string>
     <string name="action_signout">Sign Out</string>
 
+    <string name="FACEBOOK_APP_ID">289952104998233</string>
+    <string name="ACCOUNT_KIT_CLIENT_TOKEN">[ACCOUNT_KIT_CLIENT_TOKEN]</string>
+
 
 </resources>
