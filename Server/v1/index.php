@@ -68,7 +68,46 @@ $app->post('/userlogin', function() use ($app)  {
            
  });
 
+
 $app->post('/updateuser', function() use ($app)  {
+  
+  $token = $app->request->post('token');
+  $username = $app->request->post('username');
+  $age = $app->request->post('age');
+  $height = $app->request->post('height');
+  $weight = $app->request->post('weight');
+
+  $conn = new mysqli("localhost", "kolpobdc", "5NUl.2tru1T3-H", "kolpobdc_healthapp");
+  
+  $strings = "SELECT * FROM user";
+  $result = $conn->prepare($strings);
+        
+  $result->execute();
+  $result->bind_result($user_id,$usr_token , $mobile,$token_expire);
+  $valid = -1;
+  while($result->fetch()) {
+    if($token == $usr_token){
+      $valid = $user_id;
+    }
+  }
+
+  if($valid == -1){
+    $arrRtn['status'] = 'error';
+    echoRespnse(201 , $arrRtn);
+  }
+  else{
+    
+    $strings="INSERT INTO userdata(user_id,user_name,age,weight,height) VALUES (". "'".$valid."'". "," . "'". $username . "'". "," . "'". $age . "'"."," . "'". $weight . "'"."," . "'". $height . "'". ")";
+  
+    $result = $conn->query($strings);
+    $arrRtn['status'] = $result;
+    echoRespnse(201 , $arrRtn);
+  
+  }
+  $strings="INSERT INTO user(user_id,token,mobile)  VALUES (" . "NULL". "," . "'". $token . "'". "," . "'". $mobile . "'". ")";
+
+  $result = $conn->query($strings);
+  
 
 });
 
@@ -96,7 +135,7 @@ $app->post('/updatestat', function() use ($app)  {
     echoRespnse(201 , $arrRtn);
   }
   else{
-    $conn = new mysqli("localhost", "kolpobdc", "5NUl.2tru1T3-H", "kolpobdc_healthapp");
+    
     $strings="INSERT INTO healthdata(data_id,user_id,steps,distance)  VALUES (" . "NULL". "," . "'". $valid . "'". "," . "'". $steps . "'"."," . "'". $distance . "'". ")";
   
     $result = $conn->query($strings);
