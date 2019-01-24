@@ -1,0 +1,30 @@
+BookInformation = array();
+
+BookInformation= [
+    "BookId":'$book_id',
+    "BookName":'$book_name'
+    "AuthorName":[
+        {"SELECT author.name FROM author,book Where book.book_id = author.book_id"}
+    ],
+    "Edition":[
+        {"SELECT Edition.name FROM book,Edition Where book.book_id = Edition.book_id"}
+        ],
+    "Tag":[
+        {"SELECT tag.name FROM Tag,book Where Tag.book_id = book.book_id"}
+    ],
+    "Semister":[
+        {"SELECT semister.name FROM semister,book Where semister.book_id = book.book_id"}
+    ],
+    "Department":[
+        {"SELECT department.name FROM department,book Where department.book_id = book.book_id"}
+    ],
+    "University":[
+        {"SELECT University.name FROM University,book Where University.book_id = book.book_id"}
+    ],
+    "Price":{
+        "SELECT University.name FROM University,book Where University.book_id = book.book_id"
+    }
+
+
+
+];
