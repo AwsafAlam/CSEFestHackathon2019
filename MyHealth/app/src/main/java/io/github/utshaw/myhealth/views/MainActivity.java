@@ -69,21 +69,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
 //                startActivity(new Intent(MainActivity.this, StepCount.class));
-                startActivity(new Intent(MainActivity.this, HeartRateActivity.class));
+                startActivity(new Intent(MainActivity.this, StepsActivity.class));
             }
         });
 
         cardView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(MainActivity.this, HeartRateActivity.class));
             }
         });
 
         cardView3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, StepsActivity.class));
             }
         });
 
