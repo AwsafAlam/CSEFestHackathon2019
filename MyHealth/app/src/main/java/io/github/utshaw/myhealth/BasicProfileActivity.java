@@ -47,7 +47,7 @@ public class BasicProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_profile);
 
-        btn = findViewById(R.id.btn);
+        btn = findViewById(R.id.login);
         eTxtName = findViewById(R.id.name);
         eTxtAge = findViewById(R.id.age);
         eTxtWeight = findViewById(R.id.weight);

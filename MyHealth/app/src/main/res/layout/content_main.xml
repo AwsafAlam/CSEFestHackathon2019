@@ -17,9 +17,6 @@
         android:orientation="vertical"
         tools:showIn="@layout/app_bar_main">
 
-
-
-
         <LinearLayout
             android:clipToPadding="false"
             android:gravity="center"
@@ -63,9 +60,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/call_chem_teacher"
+                        android:textSize="17sp"
+                        android:text="Start"
                         android:padding="5dp"
-                        android:textColor="@android:color/darker_gray"/>
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"/>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -86,17 +85,18 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:background="@drawable/circlebackgroundpink"
-                        android:src="@drawable/circlebackgroundnored"
-                        android:padding="10dp"/>
+                        android:id="@+id/heart"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/heart_pulse"
+                        android:padding="10dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
-                        android:text="@string/physics"/>
+                        android:text="Heart Rate"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -106,9 +106,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/call_phys_teacher"
+                        android:textSize="17sp"
+                        android:text="Measure"
                         android:padding="5dp"
-                        android:textColor="@android:color/darker_gray"/>
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"/>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -268,13 +270,6 @@
 
 
         </LinearLayout>
-
-
-
-
-
-
-
 
     </LinearLayout>
 

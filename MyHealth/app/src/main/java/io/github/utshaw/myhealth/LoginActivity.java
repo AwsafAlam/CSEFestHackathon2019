@@ -38,6 +38,10 @@ public class LoginActivity extends AppCompatActivity {
         passTxt =findViewById(R.id.pass);
         login = findViewById(R.id.login);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+        if(tokenManager.getToken() != null){
+            //TODO: Check token with server
+            startActivity(new Intent(LoginActivity.this , MainActivity.class));
+        }
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
