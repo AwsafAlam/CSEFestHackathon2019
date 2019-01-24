@@ -10,7 +10,11 @@
 
     <color name="colorBackFAB">#24E4FF</color>
 
-
+<color name="colorIndigo">#011f4b</color>
+    <color name="colorGrey">#121</color>
+    <color name="colorWhite">#FFF</color>
+    <color name="colorDarkGrey">#121</color>
+    <color name="colorStrokeGrey">#121</color>
 
     <color name="able_donor">#F5A219</color>
 
