@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">My Health</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_header_title">Farhan Tanvir Utshaw</string>
+    <string name="nav_header_subtitle">Bangladesh University of Engineering and Technology</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="chemistry">some</string>
+    <string name="call_chem_teacher">some</string>
+    <string name="physics">some</string>
+    <string name="call_phys_teacher">some</string>
+    <string name="math">some</string>
+    <string name="call_math_teacher">some</string>
+    <string name="my_profile">some</string>
+
+
+</resources>
