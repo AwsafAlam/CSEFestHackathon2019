@@ -1,8 +1,11 @@
 package io.github.utshaw.myhealth;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +16,15 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.github.utshaw.myhealth.model.SingletonVolley;
@@ -24,6 +34,13 @@ public class BasicProfileActivity extends AppCompatActivity {
 
     EditText eTxtName, eTxtAge, eTxtWeight, eTxtHeight;
     Button btn;
+    private static final int RC_SIGN_IN_REQUEST = 1;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
+    private String mobile, token;
+
+    String mUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +61,87 @@ public class BasicProfileActivity extends AppCompatActivity {
                 Toast.makeText(BasicProfileActivity.this, "Data uploaded", Toast.LENGTH_SHORT).show();
             }
         });
+
+        FirebaseApp.initializeApp(this);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null){
+                    //user signed in
+
+                    onSignedInInitialize(user.getDisplayName());
+
+
+                }else{
+                    // user is signed out
+
+                    onSignedOutCleanup();
+                    List<AuthUI.IdpConfig> providers = Arrays.asList(
+                            new AuthUI.IdpConfig.PhoneBuilder().build());
+
+// Create and launch sign-in intent
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .setAvailableProviders(providers)
+                                    .build(),
+                            RC_SIGN_IN_REQUEST);
+                }
+            }
+        };
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+
+    private void onSignedInInitialize(String username) {
+        mUserName = username;
+        mobile = mFirebaseAuth.getCurrentUser().getPhoneNumber();
+        //token = mFirebaseAuth.getAccessToken(true);
+        token = FirebaseInstanceId.getInstance().getToken();
+        Log.e("Service", mobile);
+        //if(!TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(token)) {
+        //sendPost(mobile, token);
+        //}
+        uploadData();
+
+    }
+
+    private void onSignedOutCleanup() { }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RC_SIGN_IN_REQUEST){
+            if(resultCode == RESULT_OK){
+                Toast.makeText(this, "Signed In", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
+
+    private void signOutFromFirebase(){
+        AuthUI.getInstance().signOut(this);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 
     private void uploadData() {

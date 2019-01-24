@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    private String mobile, token;
+//    private String mobile, token;
 
 
     CardView cardView1, cardView2, cardView3, cardView4, cardView5;
@@ -163,24 +163,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void onSignedInInitialize(String username) {
-        mUserName = username;
-        mobile = mFirebaseAuth.getCurrentUser().getPhoneNumber();
-        //token = mFirebaseAuth.getAccessToken(true);
-        token = FirebaseInstanceId.getInstance().getToken();
-        Log.e("Service", mobile);
-        //if(!TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(token)) {
-            //sendPost(mobile, token);
-        //}
-        uploadData();
+//        mUserName = username;
+//        mobile = mFirebaseAuth.getCurrentUser().getPhoneNumber();
+//        //token = mFirebaseAuth.getAccessToken(true);
+//        token = FirebaseInstanceId.getInstance().getToken();
+//        Log.e("Service", mobile);
+//        //if(!TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(token)) {
+//            //sendPost(mobile, token);
+//        //}
+//        uploadData();
 
     }
 
-
-
-
-    private void onSignedOutCleanup() {
-
-    }
+    private void onSignedOutCleanup() { }
 
 
     public void showResponse(String response) {
@@ -205,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }else if(id == R.id.st_signout){
             signOutFromFirebase();
-
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -357,9 +351,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 //params.put(TAG_JOIN_DATE, sJoinDate);
                 //params.put(TAG_JOIN_DATE_IN_CURRENT_POSITION, sJoinDateInCurPosition);
-                params.put("mobile", mobile);
-                params.put("token", token);
-                Log.e("Service",mobile + "next");
+//                params.put("mobile", mobile);
+//                params.put("token", token);
+//                Log.e("Service",mobile + "next");
 
 
                 return params;
