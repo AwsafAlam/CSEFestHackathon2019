@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".student.FireVideo">
+
+
+
+
+    <FrameLayout
+        android:id="@+id/remote_video_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white" />
+
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/dial_mute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:borderWidth="0dp"
+            app:elevation="2dp"
+            android:clickable="true"
+            android:backgroundTint="@color/colorAccent"
+            app:srcCompat="@drawable/ic_mic_off_white_24dp" />
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/dial_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:rippleColor="@color/colorAccent"
+            android:clickable="true"
+            app:borderWidth="0dp"
+            app:elevation="2dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="@color/dial_cancel"
+            app:srcCompat="@drawable/baseline_call_white_24" />
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/video_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:rippleColor="@color/colorAccent"
+            android:clickable="true"
+            app:borderWidth="0dp"
+            app:elevation="2dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="#F0742B"
+            app:srcCompat="@drawable/ic_videocam_off_black_24dp" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/local_video_view_container"
+        android:layout_width="160dp"
+        android:layout_height="200dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@android:color/darker_gray" />
+
+
+
+
+
+
+
+</RelativeLayout>

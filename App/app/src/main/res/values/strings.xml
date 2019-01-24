@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">CSEFestHackathon</string>
+    <string name="app_name">E-Learner</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Farhan Tanvir Utshaw</string>
+    <string name="nav_header_subtitle">Bangladesh University of Engineering and Technology</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_signout">Sign Out</string>
+
+    <string name="student">Student</string>
+    <string name="teacher">Teacher</string>
+
+
+    <string-array name="level">
+        <item>SSC</item>
+        <item>HSC</item>
+    </string-array>
+
+    <string name="agora_app_id">f0da0e864b1c4a8898418cd3de2ff6f3</string>
+    <string name="call_chem_teacher">Call for the best Chemistry teacher for you</string>
+    <string name="call_phys_teacher">Call for the best Physics teacher for you</string>
+    <string name="call_math_teacher">Call for the best Mathematics teacher for you</string>
+    <string name="chemistry">Chemistry</string>
+    <string name="physics">Physics</string>
+    <string name="math">Mathematics</string>
+    <string name="my_profile">My profile</string>
+
+
 </resources>

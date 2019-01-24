@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "556590370301",
+    "firebase_url": "https://e-learner-1a9d8.firebaseio.com",
+    "project_id": "e-learner-1a9d8",
+    "storage_bucket": "e-learner-1a9d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556590370301:android:15e99315244fe843",
+        "android_client_info": {
+          "package_name": "com.example.android.e_learner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "556590370301-l35e9u9fl7ei221iurrce0ik1un4doaj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.e_learner",
+            "certificate_hash": "30d5326c666f027dae216898d949a2194080a159"
+          }
+        },
+        {
+          "client_id": "556590370301-68lccku8brfciour3mocic2l01pjp06i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7b7VLw5JvKeiDydnFbhgjY3JS_iV-glw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "556590370301-68lccku8brfciour3mocic2l01pjp06i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

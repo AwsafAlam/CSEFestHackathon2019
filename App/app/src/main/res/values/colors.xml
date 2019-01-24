@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#011C41</color>
+    <color name="colorPrimaryDark">#011432</color>
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorAccent">#F5A219</color>
+
+    <color name="colorTabLayout">#DFBEDD</color>
+
+
+    <color name="colorBackFAB">#24E4FF</color>
+
+
+
+    <color name="able_donor">#F5A219</color>
+
+    <color name="dial_cancel">#DA2A04</color>
+
+
+    <color name="lightgray">#ededed</color>
+    <color name="deeppurple">#7c4dff</color>
+    <color name="yello">#ffb300</color>
+    <color name="green">#00bfa5</color>
+
+    <color name="darkblue">#23283a</color>
+    <color name="testcolorblue">#152b38</color>
+    <color name="pink">#fe104d</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="black">#000000</color>
+    <color name="red_700">#700f0f</color>
+    <color name="startblue">#2EBAED</color>
+    <color name="endblue">#06385B</color>
+    <color name="background_color_main">#F2E8C3</color>
+
+
+
+    <color name="color_payment_meth">#808080</color>
+
+    <color name="font_color"> #F2E7C4</color>
+
+
 </resources>
