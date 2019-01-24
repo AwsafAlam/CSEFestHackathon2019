@@ -81,9 +81,7 @@ public class HeartRateActivity extends Activity {
         pBar = findViewById(R.id.progress1);
 
         preview = (SurfaceView) findViewById(R.id.preview);
-        previewHolder = preview.getHolder();
-        previewHolder.addCallback(surfaceCallback);
-        previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
 
         image = findViewById(R.id.image);
         text = (TextView) findViewById(R.id.text);
@@ -118,6 +116,10 @@ public class HeartRateActivity extends Activity {
     public void onResume() {
         super.onResume();
         if(permit) {
+
+            previewHolder = preview.getHolder();
+            previewHolder.addCallback(surfaceCallback);
+            previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
             wakeLock.acquire();
 

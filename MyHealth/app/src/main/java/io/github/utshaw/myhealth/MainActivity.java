@@ -1,6 +1,8 @@
 package io.github.utshaw.myhealth;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -18,15 +20,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.flags.Singletons;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.github.utshaw.myhealth.model.Login;
+import io.github.utshaw.myhealth.model.SingletonVolley;
 import io.github.utshaw.myhealth.remote.APIService;
 import io.github.utshaw.myhealth.remote.ApiUtils;
 import io.github.utshaw.myhealth.remote.RetrofitClient;
@@ -53,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        mAPIService = ApiUtils.getAPIService();
+       // mAPIService = ApiUtils.getAPIService();
 
         FirebaseApp.initializeApp(this);
 
@@ -150,13 +165,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void onSignedInInitialize(String username) {
         mUserName = username;
-//        mobile = mFirebaseAuth.getCurrentUser().getPhoneNumber();
-        mobile = "012381931";
-        token = "someTokenUt";
-        if(!TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(token)) {
-            sendPost(mobile, token);
-        }
+        mobile = mFirebaseAuth.getCurrentUser().getPhoneNumber();
+        //token = mFirebaseAuth.getAccessToken(true);
+        token = FirebaseInstanceId.getInstance().getToken();
+        Log.e("Service", mobile);
+        //if(!TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(token)) {
+            //sendPost(mobile, token);
+        //}
+        uploadData();
+
     }
+
+
+
 
     private void onSignedOutCleanup() {
 
@@ -164,45 +185,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void sendPost(String mobile, String token) {
-//        mAPIService.saveLogin(mobile, token).enqueue(new Callback<Login>() {
-//            @Override
-//            public void onResponse(Call<Login> call, Response<Login> response) {
-//
-//                if(response.isSuccessful()) {
-//                    showResponse(response.body().toString());
-//                    Log.i("Utshaw", "post submitted to API." + response.body().toString());
-//                }else{
-//                    if(response != null){
-//                        Log.i("Utshaw", "post unsuccessful to API. response NULL" );
-//                    }else {
-//                        Log.i("Utshaw", "post unsuccessful to API. response NOT NULL" );
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Login> call, Throwable t) {
-//                Log.e("Utshaw", "Unable to submit post to API.");
-//            }
-//        });
-
-        APIService apiService = RetrofitClient.getClient().create(APIService.class);
-
-        Call<Login> call = apiService.saveLogin(mobile,token);
-        call.enqueue(new Callback<Login>() {
+        mAPIService.saveLogin(mobile, token).enqueue(new Callback<Login>() {
             @Override
-            public void onResponse(Call<Login>call, Response<Login> response) {
-                String movies = response.body().getStatus();
-                Log.d("DEBUG", "Number of movies received: " + movies);
+            public void onResponse(Call<Login> call, Response<Login> response) {
+
+                if(response.isSuccessful()) {
+                    showResponse(response.body().toString());
+                    Log.i("Utshaw", "post submitted to API." + response.body().toString());
+                }else{
+                    if(response != null){
+                        Log.i("Utshaw", "post unsuccessful to API. response NULL" );
+                    }else {
+                        Log.i("Utshaw", "post unsuccessful to API. response NOT NULL" );
+                    }
+
+                }
             }
 
             @Override
-            public void onFailure(Call<Login>call, Throwable t) {
-                // Log error here since request failed
-                Log.e("DEBUG", t.toString());
+            public void onFailure(Call<Login> call, Throwable t) {
+                Log.e("Utshaw", "Unable to submit post to API.");
             }
         });
+
+
     }
 
     public void showResponse(String response) {
@@ -298,6 +304,97 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    private void uploadData() {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiUtils.BASE_URL, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                //Toast.makeText(getApplicationContext(),"Response="+response,Toast.LENGTH_SHORT).show();
+                Log.e("ResponseFinal=", response);
+                String dataInfo = "";
+                //pbar.setVisibility(View.INVISIBLE);
+                if (response != null) {
+                    /*try {
+                        JSONObject jsonObj = new JSONObject(response);
+                        jSongArray = jsonObj.getJSONArray(TAG_EMPLOYEE);
+                        JSONObject oneObject = jSongArray.getJSONObject(0);
+                        sDataError = oneObject.getString(TAG_DATA_ERROR)
+                                .trim();
+                        dataInfo = oneObject.getString("dataInfo")
+                                .trim();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }*/
+                } else {
+                    Log.e("ServiceHandler", "Couldn't get any data from the url");
+                }
+
+                /*if (sDataError.equals("YES")) {
+                    Toast.makeText(getApplicationContext(), "Problem Occurred. Please try again Later", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    Log.e("Hello Masud,","You are successful");
+                    JSONObject updatedJson = new JSONObject();
+
+                    try {
+                        if(dataInfo.length()>15)
+                            oneObject.put("profilePic","http://joybanglabd.org/uploads/"+dataInfo);
+                        else
+                            oneObject.put("profilePic",sProfilepic);
+                        JSONArray oneArray = new JSONArray();
+                        oneArray.put(oneObject);
+
+                        updatedJson.put("clientDetalstInfo", (Object) oneArray);
+                    }catch(JSONException e){
+
+                    }
+                    Log.e("updatedJson",updatedJson.toString());
+
+                    if(updatedJson.toString().length()>0) {
+                        sharedpreferences = getSharedPreferences(PublicVariableLink.sharedStorage,
+                                Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString("ezComUsersInfo", updatedJson.toString());
+                        editor.commit();
+                        Intent intent = new Intent(EmployeeDetailEdit.this, EmployeeDetail.class);
+                        startActivity(intent);
+                    }
+
+                }*/
+
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server Error, Please try again later", Toast.LENGTH_LONG).show();
+                //Log.e("ResponseError=", error + "");
+                //pbar.setVisibility(View.INVISIBLE);
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                //oneObject = new JSONObject();
+
+
+
+                //params.put(TAG_JOIN_DATE, sJoinDate);
+                //params.put(TAG_JOIN_DATE_IN_CURRENT_POSITION, sJoinDateInCurPosition);
+                params.put("mobile", mobile);
+                params.put("token", token);
+                Log.e("Service",mobile + "next");
+
+
+                return params;
+            }
+        };
+
+        SingletonVolley.getInstance(MainActivity.this).addToRequestQueue(stringRequest);
     }
 
 }
