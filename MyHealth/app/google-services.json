@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "642223543170",
+    "firebase_url": "https://my-health-3dcb5.firebaseio.com",
+    "project_id": "my-health-3dcb5",
+    "storage_bucket": "my-health-3dcb5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642223543170:android:ee81d3d43721aca1",
+        "android_client_info": {
+          "package_name": "io.github.utshaw.myhealth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642223543170-vl334jkc80rd48hklru1s9jciaf2cjer.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.utshaw.myhealth",
+            "certificate_hash": "30d5326c666f027dae216898d949a2194080a159"
+          }
+        },
+        {
+          "client_id": "642223543170-m19ivq8ols13vooq7mggjtst2mou3v1m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxrL6873jGjxm42LfNOgnsMZvBbgBx0xY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642223543170-m19ivq8ols13vooq7mggjtst2mou3v1m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

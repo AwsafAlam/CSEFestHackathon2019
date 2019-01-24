@@ -14,6 +14,7 @@
     <string name="math">some</string>
     <string name="call_math_teacher">some</string>
     <string name="my_profile">some</string>
+    <string name="action_signout">Sign Out</string>
 
 
 </resources>
