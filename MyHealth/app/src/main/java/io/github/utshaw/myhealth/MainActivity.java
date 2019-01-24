@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    private APIService mAPIService;
     private String mobile, token;
 
 
@@ -183,33 +182,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
-    public void sendPost(String mobile, String token) {
-        mAPIService.saveLogin(mobile, token).enqueue(new Callback<Login>() {
-            @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
-
-                if(response.isSuccessful()) {
-                    showResponse(response.body().toString());
-                    Log.i("Utshaw", "post submitted to API." + response.body().toString());
-                }else{
-                    if(response != null){
-                        Log.i("Utshaw", "post unsuccessful to API. response NULL" );
-                    }else {
-                        Log.i("Utshaw", "post unsuccessful to API. response NOT NULL" );
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Login> call, Throwable t) {
-                Log.e("Utshaw", "Unable to submit post to API.");
-            }
-        });
-
-
-    }
 
     public void showResponse(String response) {
 

@@ -3,9 +3,22 @@ package io.github.utshaw.myhealth;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import io.github.utshaw.myhealth.model.SingletonVolley;
+import io.github.utshaw.myhealth.remote.ApiUtils;
 
 public class BasicProfileActivity extends AppCompatActivity {
 
@@ -26,8 +39,73 @@ public class BasicProfileActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                uploadData();
                 startActivity(new Intent(BasicProfileActivity.this, MainActivity.class));
+                Toast.makeText(BasicProfileActivity.this, "Data uploaded", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    private void uploadData() {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://api.kolpobd.com/v1/index.php/updateuser", new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("ApiCall=", response);
+                String dataInfo = "";
+                //pbar.setVisibility(View.INVISIBLE);
+                if (response != null) {
+                    /*try {
+                        JSONObject jsonObj = new JSONObject(response);
+                        jSongArray = jsonObj.getJSONArray(TAG_EMPLOYEE);
+                        JSONObject oneObject = jSongArray.getJSONObject(0);
+                        sDataError = oneObject.getString(TAG_DATA_ERROR)
+                                .trim();
+                        dataInfo = oneObject.getString("dataInfo")
+                                .trim();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+                else {
+                    Log.e("ApiCall", "Couldn't get any data from the url");
+                }
+
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server Error, Please try again later", Toast.LENGTH_LONG).show();
+                Log.e("ApiCall=", error + "");
+                //pbar.setVisibility(View.INVISIBLE);
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                //oneObject = new JSONObject();
+
+
+
+                //params.put(TAG_JOIN_DATE, sJoinDate);
+                //params.put(TAG_JOIN_DATE_IN_CURRENT_POSITION, sJoinDateInCurPosition);
+                params.put("token", "someTokenUt");
+                params.put("username", eTxtName.getText().toString());
+                params.put("age", eTxtAge.getText().toString());
+                params.put("height", eTxtHeight.getText().toString());
+                params.put("weight", eTxtWeight.getText().toString());
+                Log.e("ApiCall",eTxtName.getText().toString() + "next");
+
+
+                return params;
+            }
+        };
+
+        SingletonVolley.getInstance(BasicProfileActivity.this).addToRequestQueue(stringRequest);
+    }
+
+
 }

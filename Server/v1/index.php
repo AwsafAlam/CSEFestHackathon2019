@@ -62,14 +62,38 @@ $app->post('/userlogin', function() use ($app)  {
   $result = $conn->query($strings);
   $arrRtn['result'] = $result;
   $arrRtn['mobile'] = $mobile;
-  $result->close();
+  // $result->close();
     
   echoRespnse(201,$arrRtn);
            
  });
 
+ $app->post('/userloginEmail', function() use ($app)  {
+ 
+  $email = $app->request->post('email');
+  $password = $app->request->post('password');
 
-$app->post('/updateuser', function() use ($app)  {
+  $conn = new mysqli("localhost", "kolpobdc", "5NUl.2tru1T3-H", "kolpobdc_healthapp");
+  
+  $arrRtn['status'] = 'success'; //Just return the user name for reference
+  $arrRtn['token'] = bin2hex(openssl_random_pseudo_bytes(28)); //generate a random token
+  $hash = password_hash($password , PASSWORD_DEFAULT);
+
+  $strings="INSERT INTO user(user_id,token,email,password)  VALUES (" . "NULL". "," . "'". $arrRtn['token'] . "'". "," . "'". $email . "'"."," . "'". $hash . "'". ")";
+
+  $result = $conn->query($strings);
+  $arrRtn['result'] = $result;
+  // $result->close();
+    
+  echoRespnse(201,$arrRtn);
+           
+});
+
+
+
+
+
+ $app->post('/updateuser', function() use ($app)  {
   
   $token = $app->request->post('token');
   $username = $app->request->post('username');
