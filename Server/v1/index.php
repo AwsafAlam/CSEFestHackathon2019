@@ -53,34 +53,98 @@ $app->post('/userlogin', function() use ($app)  {
   $token = $app->request->post('token');
 
   $conn = new mysqli("localhost", "kolpobdc", "5NUl.2tru1T3-H", "kolpobdc_healthapp");
-  // $strings = "SELECT * FROM Admin";    
   
-  // $result = $conn->prepare($strings);
-  // $result->execute();
-  // $result->bind_result($u_id,$name,$pass);
-  // $posts = array();
+  $arrRtn['status'] = 'success'; //Just return the user name for reference
+  // $arrRtn['token'] = bin2hex(openssl_random_pseudo_bytes(28)); //generate a random token
+  $arrRtn['token'] = $token; //generate a random token
+  $strings="INSERT INTO user(user_id,token,mobile)  VALUES (" . "NULL". "," . "'". $token . "'". "," . "'". $mobile . "'". ")";
 
-  // while($result->fetch()) {       
-  //     $tmp = array();
-  //     $tmp["username"] = $name;
-  //     $tmp["password"] = $pass;
+  $result = $conn->query($strings);
+  $arrRtn['result'] = $result;
+  $arrRtn['mobile'] = $mobile;
+  $result->close();
     
-  //     array_push($posts, $tmp); 
-           
-  // }
-    
-     
-    //  $result->close();
-    $arrRtn['status'] = 'success'; //Just return the user name for reference
-    $arrRtn['token'] = bin2hex(openssl_random_pseudo_bytes(28)); //generate a random token
-    // $arrRtn['token'] = $token; //generate a random token
-    $strings="INSERT INTO user(user_id,token,mobile)  VALUES (" . "NULL". "," . "'". $token . "'". "," . "'". $mobile . "'". ")";
-  
-    $result = $conn->query($strings);
-    // echo $strings;
-    echoRespnse(201,$arrRtn);
+  echoRespnse(201,$arrRtn);
            
  });
+
+
+$app->post('/updateuser', function() use ($app)  {
+  
+  $token = $app->request->post('token');
+  $username = $app->request->post('username');
+  $age = $app->request->post('age');
+  $height = $app->request->post('height');
+  $weight = $app->request->post('weight');
+
+  $conn = new mysqli("localhost", "kolpobdc", "5NUl.2tru1T3-H", "kolpobdc_healthapp");
+  
+  $strings = "SELECT * FROM user";
+  $result = $conn->prepare($strings);
+        
+  $result->execute();
+  $result->bind_result($user_id,$usr_token , $mobile,$token_expire);
+  $valid = -1;
+  while($result->fetch()) {
+    if($token == $usr_token){
+      $valid = $user_id;
+    }
+  }
+
+  if($valid == -1){
+    $arrRtn['status'] = 'error';
+    echoRespnse(201 , $arrRtn);
+  }
+  else{
+    
+    $strings="INSERT INTO userdata(user_id,user_name,age,weight,height) VALUES (". "'".$valid."'". "," . "'". $username . "'". "," . "'". $age . "'"."," . "'". $weight . "'"."," . "'". $height . "'". ")";
+  
+    $result = $conn->query($strings);
+    $arrRtn['status'] = $result;
+    echoRespnse(201 , $arrRtn);
+  
+  }
+  $strings="INSERT INTO user(user_id,token,mobile)  VALUES (" . "NULL". "," . "'". $token . "'". "," . "'". $mobile . "'". ")";
+
+  $result = $conn->query($strings);
+  
+
+});
+
+$app->post('/updatestat', function() use ($app)  {
+
+  $distance = $app->request->post('distance');
+  $steps = $app->request->post('steps');
+  $cal = $app->request->post('cal');
+  $token = $app->request->post('token');
+
+  $strings = "SELECT * FROM user";
+  $result = $conn->prepare($strings);
+        
+  $result->execute();
+  $result->bind_result($user_id,$usr_token , $mobile,$token_expire);
+  $valid = -1;
+  while($result->fetch()) {
+    if($token == $usr_token){
+      $valid = $user_id;
+    }
+  }
+
+  if($valid == -1){
+    $arrRtn['status'] = 'error';
+    echoRespnse(201 , $arrRtn);
+  }
+  else{
+    
+    $strings="INSERT INTO healthdata(data_id,user_id,steps,distance)  VALUES (" . "NULL". "," . "'". $valid . "'". "," . "'". $steps . "'"."," . "'". $distance . "'". ")";
+  
+    $result = $conn->query($strings);
+    $arrRtn['status'] = $result;
+    echoRespnse(201 , $arrRtn);
+  
+  }
+  
+});
 
 function login($username, $password) {
 
