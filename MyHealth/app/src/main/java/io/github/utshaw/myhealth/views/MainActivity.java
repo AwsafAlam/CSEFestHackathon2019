@@ -1,8 +1,6 @@
-package io.github.utshaw.myhealth;
+package io.github.utshaw.myhealth.views;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -13,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,29 +22,18 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.flags.Singletons;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.github.utshaw.myhealth.model.Login;
+import io.github.utshaw.myhealth.R;
 import io.github.utshaw.myhealth.model.SingletonVolley;
-import io.github.utshaw.myhealth.remote.APIService;
 import io.github.utshaw.myhealth.remote.ApiUtils;
-import io.github.utshaw.myhealth.remote.RetrofitClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -82,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cardView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, StepCount.class));
+//                startActivity(new Intent(MainActivity.this, StepCount.class));
             }
         });
 

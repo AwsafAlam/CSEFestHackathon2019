@@ -1,4 +1,4 @@
-package io.github.utshaw.myhealth;
+package io.github.utshaw.myhealth.views;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,6 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import io.github.utshaw.myhealth.BuildConfig;
+import io.github.utshaw.myhealth.Database;
+import io.github.utshaw.myhealth.R;
+import io.github.utshaw.myhealth.SensorListener;
 import io.github.utshaw.myhealth.util.API26Wrapper;
 import io.github.utshaw.myhealth.util.Logger;
 import io.github.utshaw.myhealth.util.Util;

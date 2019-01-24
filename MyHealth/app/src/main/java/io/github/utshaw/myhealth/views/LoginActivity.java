@@ -1,4 +1,4 @@
-package io.github.utshaw.myhealth;
+package io.github.utshaw.myhealth.views;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +20,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.utshaw.myhealth.BasicProfileActivity;
+import io.github.utshaw.myhealth.R;
 import io.github.utshaw.myhealth.model.SingletonVolley;
 import io.github.utshaw.myhealth.util.TokenManager;
 

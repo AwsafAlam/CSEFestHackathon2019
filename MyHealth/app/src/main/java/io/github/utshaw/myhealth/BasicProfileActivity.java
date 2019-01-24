@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.utshaw.myhealth.model.SingletonVolley;
-import io.github.utshaw.myhealth.remote.ApiUtils;
+import io.github.utshaw.myhealth.views.MainActivity;
 
 public class BasicProfileActivity extends AppCompatActivity {
 
