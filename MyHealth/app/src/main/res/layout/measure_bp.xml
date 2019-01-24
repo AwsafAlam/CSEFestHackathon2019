@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.cuieney.progress.library.RainbowProgressBar
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/progress1"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        app:progress_max="100"
+        app:progress_current="0"
+        app:progress_start_color="#00ff00"
+        app:progress_end_color="#0000ff"
+        app:progress_type="circle"
+        app:progress_height="5dp"
+        app:progress_radius="48dp"
+        />
+    <ImageView
+        android:id="@+id/heart"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/heart_pulse"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+    <TextView
+        android:id="@+id/detail"
+        android:textSize="16sp"
+        android:textColor="#16ba0d"
+        android:text="Measuring your Heart rate"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/progress1"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/text"
+        android:layout_centerHorizontal="true"
+        android:textSize="26sp"
+        android:textColor="#f50119"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/detail"
+        android:text="70"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <SurfaceView android:id="@+id/preview"
+        android:layout_below="@+id/text"
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+    </SurfaceView>
+
+    <RelativeLayout
+
+        android:background="#FAFAFA"
+        android:layout_below="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </RelativeLayout>
+
+
+</RelativeLayout>
