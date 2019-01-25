@@ -1,13 +1,10 @@
-package io.github.utshaw.myhealth;
+package io.github.utshaw.myhealth.views;
 
-import android.*;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.hardware.Camera;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -20,10 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.cuieney.progress.library.RainbowProgressBar;
+
+import io.github.utshaw.myhealth.ImageProcessing;
 
 
 /**
@@ -76,16 +74,16 @@ public class HeartRateActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.measure_bp);
+        setContentView(io.github.utshaw.myhealth.R.layout.measure_bp);
         static_context = this;
-        pBar = findViewById(R.id.progress1);
+        pBar = findViewById(io.github.utshaw.myhealth.R.id.progress1);
 
-        preview = (SurfaceView) findViewById(R.id.preview);
+        preview = (SurfaceView) findViewById(io.github.utshaw.myhealth.R.id.preview);
 
 
-        image = findViewById(R.id.image);
-        text = (TextView) findViewById(R.id.text);
-        heartIcon = findViewById(R.id.heart);
+        image = findViewById(io.github.utshaw.myhealth.R.id.image);
+        text = (TextView) findViewById(io.github.utshaw.myhealth.R.id.text);
+        heartIcon = findViewById(io.github.utshaw.myhealth.R.id.heart);
 
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
@@ -193,14 +191,14 @@ public class HeartRateActivity extends Activity {
 
                 if (newType != currentType) {
                     beats++;
-                    heartIcon.setImageDrawable(static_context.getResources().getDrawable(R.drawable.heart));
+                    heartIcon.setImageDrawable(static_context.getResources().getDrawable(io.github.utshaw.myhealth.R.drawable.heart));
                     // Log.d(TAG, "BEAT!! beats="+beats);
                 }
             } else if (imgAvg > rollingAverage) {
 
                 newType = TYPE.GREEN;
                 if (newType != currentType) {
-                    heartIcon.setImageDrawable(static_context.getResources().getDrawable(R.drawable.heart_pulse));
+                    heartIcon.setImageDrawable(static_context.getResources().getDrawable(io.github.utshaw.myhealth.R.drawable.heart_pulse));
                     // Log.d(TAG, "BEAT!! beats="+beats);
                 }
             }

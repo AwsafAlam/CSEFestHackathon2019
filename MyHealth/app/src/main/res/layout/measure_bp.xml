@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.cuieney.progress.library.RainbowProgressBar
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
         android:id="@+id/progress1"
         android:layout_width="110dp"
@@ -20,7 +20,7 @@
     <ImageView
         android:id="@+id/heart"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="80dp"
         android:src="@drawable/heart_pulse"
         android:layout_width="60dp"
         android:layout_height="60dp" />
@@ -30,7 +30,7 @@
         android:textSize="16sp"
         android:textColor="#16ba0d"
         android:text="Measuring your Heart rate"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:layout_below="@+id/progress1"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
@@ -38,9 +38,9 @@
     <TextView
         android:id="@+id/text"
         android:layout_centerHorizontal="true"
-        android:textSize="26sp"
+        android:textSize="50sp"
         android:textColor="#f50119"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:layout_below="@+id/detail"
         android:text="70"
         android:layout_width="wrap_content"
@@ -60,6 +60,24 @@
         android:layout_below="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/sensor"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/sensor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/instr"
+            android:layout_centerHorizontal="true"
+            android:textSize="16sp"
+            android:layout_below="@+id/sensor"
+            android:layout_marginTop="50dp"
+            android:text="Please keep your finger on top of the camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 

@@ -1,8 +1,6 @@
-package io.github.utshaw.myhealth;
+package io.github.utshaw.myhealth.views;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -13,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,29 +22,19 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.flags.Singletons;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.github.utshaw.myhealth.model.Login;
+import io.github.utshaw.myhealth.R;
+import io.github.utshaw.myhealth.SensorListener;
 import io.github.utshaw.myhealth.model.SingletonVolley;
-import io.github.utshaw.myhealth.remote.APIService;
 import io.github.utshaw.myhealth.remote.ApiUtils;
-import io.github.utshaw.myhealth.remote.RetrofitClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -55,8 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    private APIService mAPIService;
-    private String mobile, token;
+//    private String mobile, token;
 
 
     CardView cardView1, cardView2, cardView3, cardView4, cardView5;
@@ -83,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cardView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, StepCount.class));
+//                startActivity(new Intent(MainActivity.this, StepCount.class));
+                startActivity(new Intent(MainActivity.this, StepsActivity.class));
             }
         });
 
@@ -97,7 +84,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cardView3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 startActivity(new Intent(MainActivity.this, StepsActivity.class));
+
             }
         });
 
@@ -166,52 +155,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void onSignedInInitialize(String username) {
-        mUserName = username;
-        mobile = mFirebaseAuth.getCurrentUser().getPhoneNumber();
-        //token = mFirebaseAuth.getAccessToken(true);
-        token = FirebaseInstanceId.getInstance().getToken();
-        Log.e("Service", mobile);
-        //if(!TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(token)) {
-            //sendPost(mobile, token);
-        //}
-        uploadData();
+//        mUserName = username;
+//        mobile = mFirebaseAuth.getCurrentUser().getPhoneNumber();
+//        //token = mFirebaseAuth.getAccessToken(true);
+//        token = FirebaseInstanceId.getInstance().getToken();
+//        Log.e("Service", mobile);
+//        //if(!TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(token)) {
+//            //sendPost(mobile, token);
+//        //}
+//        uploadData();
 
     }
 
+    private void onSignedOutCleanup() { }
 
-
-
-    private void onSignedOutCleanup() {
-
-    }
-
-
-    public void sendPost(String mobile, String token) {
-        mAPIService.saveLogin(mobile, token).enqueue(new Callback<Login>() {
-            @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
-
-                if(response.isSuccessful()) {
-                    showResponse(response.body().toString());
-                    Log.i("Utshaw", "post submitted to API." + response.body().toString());
-                }else{
-                    if(response != null){
-                        Log.i("Utshaw", "post unsuccessful to API. response NULL" );
-                    }else {
-                        Log.i("Utshaw", "post unsuccessful to API. response NOT NULL" );
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Login> call, Throwable t) {
-                Log.e("Utshaw", "Unable to submit post to API.");
-            }
-        });
-
-
-    }
 
     public void showResponse(String response) {
 
@@ -235,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }else if(id == R.id.st_signout){
             signOutFromFirebase();
-
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -387,9 +343,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 //params.put(TAG_JOIN_DATE, sJoinDate);
                 //params.put(TAG_JOIN_DATE_IN_CURRENT_POSITION, sJoinDateInCurPosition);
-                params.put("mobile", mobile);
-                params.put("token", token);
-                Log.e("Service",mobile + "next");
+//                params.put("mobile", mobile);
+//                params.put("token", token);
+//                Log.e("Service",mobile + "next");
 
 
                 return params;

@@ -11,6 +11,16 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <meta-data
+        android:name="com.facebook.accountkit.ApplicationName"
+        android:value="@string/app_name" />
+    <meta-data
+        android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/FACEBOOK_APP_ID" />
+    <meta-data
+        android:name="com.facebook.accountkit.ClientToken"
+        android:value="@string/ACCOUNT_KIT_CLIENT_TOKEN" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +28,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".views.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,11 +36,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".views.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".StepCount" />
-        <activity android:name=".HeartRateActivity" />
 
         <receiver android:name=".BootReceiver">
             <intent-filter>
@@ -46,6 +54,10 @@
         <service android:name=".SensorListener" />
 
         <activity android:name=".StepsActivity"></activity>
+
+        <activity android:name=".views.HeartRateActivity" />
+        <activity android:name=".BasicProfileActivity" />
+
     </application>
 
 </manifest>

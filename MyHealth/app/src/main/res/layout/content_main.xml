@@ -6,20 +6,88 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity">
+    tools:context=".views.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:background="@color/background_color_main"
+        android:background="@color/colorWhite"
         android:padding="16dp"
         android:orientation="vertical"
         tools:showIn="@layout/app_bar_main">
 
+        <LinearLayout
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_bottom"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <RelativeLayout
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <com.cuieney.progress.library.RainbowProgressBar
+                        android:layout_marginTop="0dp"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/progress1"
+                        android:layout_width="190dp"
+                        android:layout_height="190dp"
+                        app:progress_max="100"
+                        app:progress_current="0"
+                        app:progress_start_color="#ef4010"
+                        app:progress_end_color="#66da43"
+                        app:progress_type="circle"
+                        app:progress_height="15dp"
+                        app:progress_radius="78dp"
+                        />
 
 
+                    <TextView
+                        android:id="@+id/text"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="46sp"
+                        android:textColor="#f50119"
+                        android:layout_marginTop="40dp"
+                        android:text="270"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
+                    <TextView
+                        android:id="@+id/detail"
+                        android:textSize="16sp"
+                        android:textColor="#16ba0d"
+                        android:text="/ 1000 steps"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@+id/text"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <!--<View-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="1dp"-->
+                        <!--android:background="@color/lightgray"-->
+                        <!--android:layout_margin="10dp"/>-->
+
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
         <LinearLayout
             android:clipToPadding="false"
             android:gravity="center"
@@ -43,17 +111,16 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:background="@drawable/circlebackgroundpurple"
-                        android:src="@drawable/ic_launcher_background"
+                        android:layout_width="74dp"
+                        android:layout_height="74dp"
+                        android:src="@drawable/steps"
                         android:padding="10dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
-                        android:text="@string/chemistry"/>
+                        android:text="Steps"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -63,9 +130,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/call_chem_teacher"
+                        android:textSize="17sp"
+                        android:text="Start"
                         android:padding="5dp"
-                        android:textColor="@android:color/darker_gray"/>
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"/>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -86,17 +155,18 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:background="@drawable/circlebackgroundpink"
-                        android:src="@drawable/circlebackgroundnored"
-                        android:padding="10dp"/>
+                        android:id="@+id/heart"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/heart_pulse"
+                        android:padding="10dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
-                        android:text="@string/physics"/>
+                        android:text="Heart Rate"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -106,9 +176,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/call_phys_teacher"
+                        android:textSize="17sp"
+                        android:text="Measure"
                         android:padding="5dp"
-                        android:textColor="@android:color/darker_gray"/>
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"/>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -139,15 +211,14 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:background="@drawable/circlebackgroundgreen"
-                        android:src="@drawable/circlebackgroundnored"
+                        android:src="@drawable/calorie"
                         android:padding="10dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
-                        android:text="@string/math"/>
+                        android:text="Calories"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -157,9 +228,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/call_math_teacher"
+                        android:text="Track"
                         android:padding="5dp"
-                        android:textColor="@android:color/darker_gray"/>
+                        android:textColor="@color/colorAccent"/>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -184,15 +255,14 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:background="@drawable/circlebackgroundnored"
                         android:padding="10dp"
-                        android:src="@drawable/ic_launcher_background" />
+                        android:src="@drawable/scales" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="@string/my_profile"
+                        android:text="Weight"
                         android:textStyle="bold" />
 
                     <View
@@ -206,75 +276,13 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Edit your profile"
-                        android:textColor="@android:color/darker_gray" />
+                        android:text="View Trends"
+                        android:textColor="@color/colorAccent" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
-        <LinearLayout
-            android:clipToPadding="false"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_bottom"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-                <LinearLayout
-                    android:layout_marginTop="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:background="@drawable/circlebackgroundyellow"
-                        android:src="@drawable/ic_launcher_background"
-                        android:padding="10dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp"
-                        android:text="Give review for your last class"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/lightgray"
-                        android:layout_margin="10dp"/>
-
-                    <RatingBar
-                        android:layout_gravity="center_horizontal"
-                        android:id="@+id/rtbHighScore"
-                        style="?android:attr/ratingBarStyleIndicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:max="5"
-                        android:numStars="5"
-                        android:rating="0.0"
-                        android:stepSize="0.1" />
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-
-        </LinearLayout>
-
-
-
-
-
-
-
 
     </LinearLayout>
 
