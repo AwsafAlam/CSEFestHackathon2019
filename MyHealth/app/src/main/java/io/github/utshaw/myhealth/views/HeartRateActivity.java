@@ -461,10 +461,12 @@ public class HeartRateActivity extends Activity {
                 params.put("time",timestamp);
                 params.put("heartrate",rate);
 
-
-                String tkn = static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE)
-                        .getString("token","");
+//CC
+                String tkn = static_context.getSharedPreferences("prefs", MODE_PRIVATE).getString("ACCESS_TOKEN", null);
                 params.put("token",tkn);
+                Log.e("HRsend",tkn);
+
+
 
 
 
