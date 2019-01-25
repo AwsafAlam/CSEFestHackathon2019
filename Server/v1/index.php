@@ -66,32 +66,129 @@ $app->post('/userlogin', function() use ($app)  {
     
   echoRespnse(201,$arrRtn);
            
- });
-
- $app->post('/userloginEmail', function() use ($app)  {
- 
-  $email = $app->request->post('email');
-  $password = $app->request->post('password');
-
-  $conn = new mysqli("localhost", "kolpobdc", "5NUl.2tru1T3-H", "kolpobdc_healthapp");
-  
-  $arrRtn['status'] = 'success'; //Just return the user name for reference
-  $arrRtn['token'] = bin2hex(openssl_random_pseudo_bytes(28)); //generate a random token
-  $hash = password_hash($password , PASSWORD_DEFAULT);
-
-  $strings="INSERT INTO user(user_id,token,email,password)  VALUES (" . "NULL". "," . "'". $arrRtn['token'] . "'". "," . "'". $email . "'"."," . "'". $hash . "'". ")";
-
-  $result = $conn->query($strings);
-  $arrRtn['result'] = $result;
-  // $result->close();
-    
-  echoRespnse(201,$arrRtn);
-           
 });
 
 
+$app->post('/userloginEmail', function() use ($app)  {
+ 
+  $email = $app->request->post('email');
+  $password = $app->request->post('password');
+  
+  if($email === NULL || $password === NULL){
+    $arrRtn['status'] = 'error'; //Just return the user name for reference
+    $arrRtn['token'] = '';
+    echoRespnse(201,$arrRtn);
+    return;
+  }
 
+  $conn = new mysqli("localhost", "kolpobdc", "5NUl.2tru1T3-H", "kolpobdc_healthapp");
+  
+  $strings = "SELECT * FROM user WHERE email= '".$email."'";
+  $result = $conn->prepare($strings);
+        
+  $result->execute();
+  $result->bind_result($user_id,$usr_token ,$token_expire,$pass, $mail);
+  $valid = -1;
 
+  $myFlag = 0;
+  //echo $user_id;
+  while($result->fetch()) {
+    // echo "Loop ".password_verify( $password, $pass );
+    if($email == $mail && password_verify( $password, $pass )){
+      // match
+      //echo "match";
+      $valid = $user_id;
+      $myFlag = 1;
+      break;
+    }
+    else if($email == $mail){
+       // not match
+      $valid = -2;
+    }
+    $myFlag = 1;
+  }
+
+  if($myFlag == 0){
+    $arrRtn['status'] = 'register'; //Just return the user name for reference
+
+    $arrRtn['token'] = password_hash($valid, PASSWORD_DEFAULT); //generate a random token
+
+    $hash = password_hash($password , PASSWORD_DEFAULT);
+  
+    $strings="INSERT INTO user(user_id,token,email,password)  VALUES (" . "NULL". "," . "'". $arrRtn['token'] . "'". "," . "'". $email . "'"."," . "'". $hash . "'". ")";
+  
+    $result = $conn->query($strings);
+    $arrRtn['result'] = $result;
+    // $result->close();
+      
+    echoRespnse(201,$arrRtn);
+  }
+  else{
+    if($valid == -2){
+      //not match
+      $arrRtn['status'] = 'error'; //Just return the user name for reference
+      $arrRtn['token'] = '';
+      echoRespnse(201,$arrRtn);
+    }
+    else{
+      // valid login
+      $arrRtn['status'] = 'login'; //Just return the user name for reference
+      $arrRtn['token'] = password_hash($valid,PASSWORD_DEFAULT); //generate a random token
+      echoRespnse(201,$arrRtn);
+    }
+   
+  }
+
+  
+  // echo "return";
+           
+});
+
+$app->post('/userHeartRate', function() use ($app)  {
+
+  $token = $app->request->post('token');
+  $heartrate = $app->request->post('heartrate');
+  $timestamp = $app->request->post('time');
+  
+  $hrtArr = explode(";",$heartrate);
+  $timeArr = explode(";",$timestamp);
+
+  $conn = new mysqli("localhost", "kolpobdc", "5NUl.2tru1T3-H", "kolpobdc_healthapp");
+
+  $strings = "SELECT * FROM user";
+  $result = $conn->prepare($strings);
+        
+  $result->execute();
+  $result->bind_result($user_id,$usr_token ,$token_expire,$pass, $mail);
+
+  $valid = -1;
+  while($result->fetch()) {
+    if(password_verify( $user_id, $token )){
+      $valid = $user_id;
+      break;
+    }
+  }
+
+  if($valid == -1){
+    $arrRtn['status'] = 'error';
+    echoRespnse(201 , $arrRtn);
+  }
+  else{
+    // echo sizeof($hrtArr);
+    for ($i=0; $i < sizeof($hrtArr) ; $i++) { 
+      # code...
+      $strings="INSERT INTO heartrate(user_id,heart_rate,time)  VALUES (" . "'". $valid . "'". "," . "'". $hrtArr[$i] . "'"."," . "'". $timeArr[$i] . "'". ")";
+  
+      $result = $conn->query($strings);
+      //$arrRtn['status'] = $result;
+    
+    }
+    $arrRtn['status'] = 'success';
+    echoRespnse(201 , $arrRtn);
+  
+  }
+  
+});
 
  $app->post('/updateuser', function() use ($app)  {
   
