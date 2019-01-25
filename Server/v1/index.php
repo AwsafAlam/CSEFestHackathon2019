@@ -73,9 +73,16 @@ $app->post('/userloginEmail', function() use ($app)  {
  
   $email = $app->request->post('email');
   $password = $app->request->post('password');
+  $apikey = $app->request->post('api');
   
-  if($email === NULL || $password === NULL){
+  if($email === NULL || $password === NULL || $apikey === NULL){
     $arrRtn['status'] = 'error'; //Just return the user name for reference
+    $arrRtn['token'] = '';
+    echoRespnse(201,$arrRtn);
+    return;
+  }
+  if($apikey != "fAwKa7NDMWCO88ifAF7a"){
+    $arrRtn['status'] = 'api_invalid'; //Just return the user name for reference
     $arrRtn['token'] = '';
     echoRespnse(201,$arrRtn);
     return;
@@ -111,7 +118,8 @@ $app->post('/userloginEmail', function() use ($app)  {
   if($myFlag == 0){
     $arrRtn['status'] = 'register'; //Just return the user name for reference
 
-    $arrRtn['token'] = password_hash($valid, PASSWORD_DEFAULT); //generate a random token
+    // $arrRtn['token'] = password_hash($valid, PASSWORD_DEFAULT); //generate a random token
+    $arrRtn['token'] = bin2hex(openssl_random_pseudo_bytes(8)); //generate a random token
 
     $hash = password_hash($password , PASSWORD_DEFAULT);
   
@@ -133,7 +141,8 @@ $app->post('/userloginEmail', function() use ($app)  {
     else{
       // valid login
       $arrRtn['status'] = 'login'; //Just return the user name for reference
-      $arrRtn['token'] = password_hash($valid,PASSWORD_DEFAULT); //generate a random token
+      // $arrRtn['token'] = password_hash($valid,PASSWORD_DEFAULT); //generate a random token
+      $arrRtn['token'] = bin2hex(openssl_random_pseudo_bytes(8)); //generate a random token
       echoRespnse(201,$arrRtn);
     }
    
@@ -149,28 +158,36 @@ $app->post('/userHeartRate', function() use ($app)  {
   $token = $app->request->post('token');
   $heartrate = $app->request->post('heartrate');
   $timestamp = $app->request->post('time');
+  //$apikey = $app->request->post('api');
   
+  if($token === NULL || $heartrate === NULL || $timestamp === NULL){
+    $arrRtn['status'] = 'error'; //Just return the user name for reference
+    echoRespnse(201,$arrRtn);
+    return;
+  }
+
   $hrtArr = explode(";",$heartrate);
   $timeArr = explode(";",$timestamp);
 
   $conn = new mysqli("localhost", "kolpobdc", "5NUl.2tru1T3-H", "kolpobdc_healthapp");
 
-  $strings = "SELECT * FROM user";
+  $strings = "SELECT * FROM user where token= '".$token."'";
   $result = $conn->prepare($strings);
         
   $result->execute();
   $result->bind_result($user_id,$usr_token ,$token_expire,$pass, $mail);
 
-  $valid = -1;
-  while($result->fetch()) {
-    if(password_verify( $user_id, $token )){
-      $valid = $user_id;
-      break;
-    }
-  }
+  // $valid = -1;
+  $valid = $user_id;
+  // while($result->fetch()) {
+  //   if(password_verify( $user_id, $token )){
+  //     $valid = $user_id;
+  //     break;
+  //   }
+  // }
 
-  if($valid == -1){
-    $arrRtn['status'] = 'error';
+  if($valid === -1){
+    $arrRtn['status'] = 'invalid token';
     echoRespnse(201 , $arrRtn);
   }
   else{
