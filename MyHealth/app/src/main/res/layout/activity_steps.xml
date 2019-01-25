@@ -18,10 +18,11 @@
         app:progress_radius="48dp"
         />
     <ImageView
+
         android:id="@+id/heart"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/heart_pulse"
+        android:layout_marginTop="45dp"
+        android:src="@drawable/steps"
         android:layout_width="60dp"
         android:layout_height="60dp" />
 
@@ -29,34 +30,44 @@
         android:id="@+id/detail"
         android:textSize="16sp"
         android:textColor="#16ba0d"
-        android:text="Measuring your Heart rate"
+        android:text="Your Daily step challege: 1000"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/progress1"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
-        android:id="@+id/text"
+       android:id="@+id/step"
+        android:textSize="16sp"
+        android:textColor="#16ba0d"
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/progress1"
         android:layout_centerHorizontal="true"
-        android:textSize="26sp"
-        android:textColor="#f50119"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/detail"
-        android:text="70"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <TextView
+        android:textSize="16sp"
+        android:text="You have crossed today"
+        android:layout_marginTop="70dp"
+        android:layout_below="@+id/progress1"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2" />
 
 
+    <TextView
+        android:id="@+id/km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:text="KM"
+        android:textColor="#f50119"
+        android:textSize="26sp" />
 
 
-
-    <RelativeLayout
-
-        android:background="#FAFAFA"
-        android:layout_below="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </RelativeLayout>
 
 
 </RelativeLayout>

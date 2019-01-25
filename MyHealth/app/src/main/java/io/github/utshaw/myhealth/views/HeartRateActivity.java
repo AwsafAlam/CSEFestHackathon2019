@@ -459,8 +459,12 @@ public class HeartRateActivity extends Activity {
                 Map<String, String> params = new HashMap<>();
                 //oneObject = new JSONObject();
                 params.put("time",timestamp);
-                params.put("heartRate",rate);
+                params.put("heartrate",rate);
 
+
+                String tkn = static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                        .getString("token","");
+                params.put("token",tkn);
 
 
 
@@ -486,7 +490,10 @@ public class HeartRateActivity extends Activity {
 
         StringBuilder sbTime = new StringBuilder();
         StringBuilder sbRate = new StringBuilder();
-        String prefix = "";
+        String prefix = ";";
+
+        sbTime.append("0");
+        sbRate.append("0");
 
         int startFrom = static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE)
                 .getInt("start",0);
@@ -505,7 +512,7 @@ public class HeartRateActivity extends Activity {
 
             sbTime.append(prefix);
             sbRate.append(prefix);
-            prefix = ";";
+
             sbTime.append(date);
             //sbTime.append((new Date(time)).toString());
             sbRate.append(Integer.toString(rate));
@@ -516,7 +523,7 @@ public class HeartRateActivity extends Activity {
 
             Log.e("HRsend",sbTime.toString() + "   "+sbRate.toString());
             Log.e("HRsend",sbRate.toString());
-            //uploadData(sbTime.toString(), sbRate.toString());
+            uploadData(sbTime.toString(), sbRate.toString());
 
     }
 
