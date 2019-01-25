@@ -1,5 +1,6 @@
 package io.github.utshaw.myhealth.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,7 +16,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import android.widget.TextView;
+
 import android.widget.Button;
+
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -23,13 +28,22 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import com.cuieney.progress.library.RainbowProgressBar;
 
+
+
+
+
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.utshaw.myhealth.DatabaseHR;
 import io.github.utshaw.myhealth.R;
+import io.github.utshaw.myhealth.RecordActivity;
 import io.github.utshaw.myhealth.SensorListener;
 import io.github.utshaw.myhealth.model.SingletonVolley;
 import io.github.utshaw.myhealth.remote.ApiUtils;
@@ -39,8 +53,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final int RC_SIGN_IN_REQUEST = 1;
 
+    TextView step, km;
+
+    //private String mobile, token;
+
+
+
 //    private String mobile, token;
     TokenManager tokenManager;
+
 
     CardView cardView1, cardView2, cardView3, cardView4, cardView5;
 
@@ -118,7 +139,75 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         startService(new Intent(this, SensorListener.class));
+        if(HeartRateActivity.isNetworkAvailable(this))
+            sendData();
 
+        int next = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                .getInt("steppoints",0);
+        long time = System.currentTimeMillis();
+        int day_total = 0;
+        for(int ix = next - 1; ix >0; ix --) {
+            int rate = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                    .getInt("steprate" + Integer.toString(ix), 0);
+
+
+            long timePrevious = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                    .getLong("steptime"+Integer.toString(ix),0);
+            if(timePrevious + 24*3600*1000 > time){
+                day_total+= rate;
+            }else
+                break;
+        }
+        int distance_total = (int)(day_total * 0.91);
+        step = findViewById(R.id.text);
+        km = findViewById(R.id.km);
+        if(distance_total < 1000){
+            km.setText(Integer.toString(distance_total)+ " meters");
+        }
+        else{
+            Float v = (float)distance_total/1000;
+            km.setText(Float.toString(v)+ " Km");
+        }
+
+        RainbowProgressBar bar = findViewById(R.id.progress1);
+        bar.setProgress(day_total);
+    }
+
+    private void sendData(){
+
+        StringBuilder sbTime = new StringBuilder();
+        StringBuilder sbRate = new StringBuilder();
+        String prefix = "";
+
+        int startFrom = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                .getInt("stepstart",0);
+        int next = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                .getInt("steppoints",0);
+
+        for(int ix = startFrom; ix < next; ix ++){
+            int rate = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                    .getInt("steprate"+Integer.toString(ix),0);
+            long time = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                    .getLong("steptime"+Integer.toString(ix),0);
+
+            Date newDate = new Date(time);
+            SimpleDateFormat spf= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String date = spf.format(newDate);
+
+            sbTime.append(prefix);
+            sbRate.append(prefix);
+            prefix = ";";
+            sbTime.append(date);
+            //sbTime.append((new Date(time)).toString());
+            sbRate.append(Integer.toString(rate));
+        }
+
+        getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit()
+                .putInt("stepstart",next).apply();
+
+        Log.e("HRsend",sbTime.toString() + "   "+sbRate.toString());
+        Log.e("HRsend",sbRate.toString());
+        uploadData(sbTime.toString(), sbRate.toString());
 
     }
 
@@ -143,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.st_class) {
 //            startActivity(new Intent(MainActivity.this, CallingActivity.class));
+            startActivity(new Intent(MainActivity.this, RecordActivity.class));
         }else if(id == R.id.st_payment){
 
         }else if(id == R.id.st_profile){
@@ -208,6 +298,101 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
+    private void uploadData(final String timestamp, final String rate) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiUtils.BASE_URL_STEP, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                //Toast.makeText(getApplicationContext(),"Response="+response,Toast.LENGTH_SHORT).show();
+                Log.e("ResponseFinal=", response);
+                String dataInfo = "";
+                //pbar.setVisibility(View.INVISIBLE);
+                if (response != null) {
+                    /*try {
+                        JSONObject jsonObj = new JSONObject(response);
+                        jSongArray = jsonObj.getJSONArray(TAG_EMPLOYEE);
+                        JSONObject oneObject = jSongArray.getJSONObject(0);
+                        sDataError = oneObject.getString(TAG_DATA_ERROR)
+                                .trim();
+                        dataInfo = oneObject.getString("dataInfo")
+                                .trim();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }*/
+                } else {
+                    Log.e("ServiceHandler", "Couldn't get any data from the url");
+                }
+
+                /*if (sDataError.equals("YES")) {
+                    Toast.makeText(getApplicationContext(), "Problem Occurred. Please try again Later", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    Log.e("Hello Masud,","You are successful");
+                    JSONObject updatedJson = new JSONObject();
+
+                    try {
+                        if(dataInfo.length()>15)
+                            oneObject.put("profilePic","http://joybanglabd.org/uploads/"+dataInfo);
+                        else
+                            oneObject.put("profilePic",sProfilepic);
+                        JSONArray oneArray = new JSONArray();
+                        oneArray.put(oneObject);
+
+                        updatedJson.put("clientDetalstInfo", (Object) oneArray);
+                    }catch(JSONException e){
+
+                    }
+                    Log.e("updatedJson",updatedJson.toString());
+
+                    if(updatedJson.toString().length()>0) {
+                        sharedpreferences = getSharedPreferences(PublicVariableLink.sharedStorage,
+                                Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString("ezComUsersInfo", updatedJson.toString());
+                        editor.commit();
+                        Intent intent = new Intent(EmployeeDetailEdit.this, EmployeeDetail.class);
+                        startActivity(intent);
+                    }
+
+                }*/
+
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(static_context, "Server Error, Please try again later", Toast.LENGTH_LONG).show();
+                //Log.e("ResponseError=", error + "");
+                //pbar.setVisibility(View.INVISIBLE);
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                //oneObject = new JSONObject();
+                params.put("time",timestamp);
+                params.put("stepRate",rate);
+                params.put("stepRate",rate);
+
+
+
+
+                //params.put(TAG_JOIN_DATE, sJoinDate);
+                //params.put(TAG_JOIN_DATE_IN_CURRENT_POSITION, sJoinDateInCurPosition);
+//                params.put("mobile", mobile);
+//                params.put("token", token);
+//                Log.e("Service",mobile + "next");
+
+
+                return params;
+            }
+        };
+
+        SingletonVolley.getInstance(this).addToRequestQueue(stringRequest);
+    }
 
     private void uploadData() {
 

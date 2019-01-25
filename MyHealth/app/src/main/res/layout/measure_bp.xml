@@ -42,7 +42,7 @@
         android:textColor="#f50119"
         android:layout_marginTop="50dp"
         android:layout_below="@+id/detail"
-        android:text="70"
+        android:text="..."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

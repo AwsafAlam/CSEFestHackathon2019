@@ -7,7 +7,7 @@
         <item
             android:id="@+id/st_class"
             android:icon="@android:drawable/arrow_up_float"
-            android:title="All classes" />
+            android:title="Blood Rate Records" />
 
         <!--<item-->
             <!--android:id="@+id/st_rating"-->
@@ -18,7 +18,7 @@
         <item
             android:id="@+id/st_profile"
             android:icon="@android:drawable/arrow_up_float"
-            android:title="My Profile" />
+            android:title="Step records" />
         <!--<item-->
             <!--android:id="@+id/nav_manage"-->
             <!--android:icon="@drawable/ic_menu_manage"-->
@@ -30,7 +30,7 @@
             <item
                 android:id="@+id/st_payment"
                 android:icon="@android:drawable/arrow_up_float"
-                android:title="Payment &amp; Promotion" />
+                android:title="Settings" />
             <item
                 android:id="@+id/st_signout"
                 android:icon="@android:drawable/arrow_up_float"

@@ -8,7 +8,7 @@
     <string name="nav_header_subtitle">Bangladesh University of Engineering and Technology</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="chemistry">some</string>
-    <string name="call_chem_teacher">some</string>
+    <string name="t23">some</string>
     <string name="physics">some</string>
     <string name="call_phys_teacher">some</string>
     <string name="math">some</string>
@@ -18,6 +18,9 @@
 
     <string name="FACEBOOK_APP_ID">289952104998233</string>
     <string name="ACCOUNT_KIT_CLIENT_TOKEN">[ACCOUNT_KIT_CLIENT_TOKEN]</string>
+
+
+    <string name="API_SECURITY_KEY">fAwKa7NDMWCO88ifAF7a</string>
 
 
 </resources>
