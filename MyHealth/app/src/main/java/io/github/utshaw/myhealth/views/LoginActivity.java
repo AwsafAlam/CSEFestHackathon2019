@@ -123,6 +123,9 @@ public class LoginActivity extends AppCompatActivity {
                 //params.put("token", "newuser");
                 params.put("email", emailTxt.getText().toString());
                 params.put("password", passTxt.getText().toString());
+                params.put("api",  getResources().getString(R.string.API_SECURITY_KEY));
+
+
                 Log.e("ApiCall",emailTxt.getText().toString() + " -next");
 
 
