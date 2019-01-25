@@ -61,7 +61,7 @@
                         android:textSize="46sp"
                         android:textColor="#f50119"
                         android:layout_marginTop="40dp"
-                        android:text="270"
+                        android:text="..."
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -80,8 +80,8 @@
                     <TextView
                         android:id="@+id/km"
                         android:textSize="16sp"
-                        android:textColor="#ffffff"
-                        android:text="/ 1000 steps"
+                        android:textColor="#020202"
+                        android:text="km"
                         android:layout_marginTop="20dp"
                         android:layout_below="@+id/text"
                         android:layout_centerHorizontal="true"

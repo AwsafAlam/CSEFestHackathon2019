@@ -45,6 +45,7 @@ import io.github.utshaw.myhealth.DatabaseHR;
 import io.github.utshaw.myhealth.R;
 import io.github.utshaw.myhealth.RecordActivity;
 import io.github.utshaw.myhealth.SensorListener;
+import io.github.utshaw.myhealth.StepRecordActivity;
 import io.github.utshaw.myhealth.model.SingletonVolley;
 import io.github.utshaw.myhealth.remote.ApiUtils;
 import io.github.utshaw.myhealth.util.TokenManager;
@@ -158,8 +159,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }else
                 break;
         }
-        int distance_total = (int)(day_total * 0.91);
+        int distance_total = (int)(day_total * 0.75);
         step = findViewById(R.id.text);
+        step.setText(Integer.toString(day_total));
         km = findViewById(R.id.km);
         if(distance_total < 1000){
             km.setText(Integer.toString(distance_total)+ " meters");
@@ -234,12 +236,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            startActivity(new Intent(MainActivity.this, CallingActivity.class));
             startActivity(new Intent(MainActivity.this, RecordActivity.class));
         }else if(id == R.id.st_payment){
+            startActivity(new Intent(MainActivity.this, StepRecordActivity.class));
 
         }else if(id == R.id.st_profile){
+            startActivity(new Intent(MainActivity.this, StepRecordActivity.class));
 
         }else if(id == R.id.st_signout){
 
-
+            tokenManager.deleteToken();
+            finish();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            return true;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
