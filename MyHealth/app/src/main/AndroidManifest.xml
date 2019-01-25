@@ -59,7 +59,7 @@
         <activity android:name=".views.HeartRateActivity" />
         <activity android:name=".BasicProfileActivity" />
         <activity android:name=".RecordActivity" />
-        <activity android:name=".StepRecordActivity" />
+        <activity android:name="io.github.utshaw.myhealth.StepRecordActivity" />
         <activity android:name=".CalorieActivity"></activity>
     </application>
 
