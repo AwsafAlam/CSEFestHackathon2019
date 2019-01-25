@@ -31,21 +31,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 import io.github.utshaw.myhealth.util.Logger;
 import io.github.utshaw.myhealth.util.Util;
 
-public class Database extends SQLiteOpenHelper {
+public class DatabaseHR extends SQLiteOpenHelper {
 
-    private final static String DB_NAME = "steps";
+    private final static String DB_NAME = "heartRate";
     private final static int DB_VERSION = 2;
 
-    private static Database instance;
+    private static DatabaseHR instance;
     private static final AtomicInteger openCounter = new AtomicInteger();
 
-    private Database(final Context context) {
+    private DatabaseHR(final Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    public static synchronized Database getInstance(final Context c) {
+    public static synchronized DatabaseHR getInstance(final Context c) {
         if (instance == null) {
-            instance = new Database(c.getApplicationContext());
+            instance = new DatabaseHR(c.getApplicationContext());
         }
         openCounter.incrementAndGet();
         return instance;
@@ -175,6 +175,23 @@ public class Database extends SQLiteOpenHelper {
         return newEntryCreated;
     }
 
+    public Pair<Date, Integer> getRecordData(long startFrom) {
+        Cursor c;
+        try {
+            c = getReadableDatabase()
+                    .query(DB_NAME, new String[]{"date, steps"}, "date > " + Long.toString(startFrom), null, null, null,
+                            "date");
+            c.moveToFirst();
+            Pair<Date, Integer> p = new Pair<Date, Integer>(new Date(c.getLong(0)), c.getInt(0));
+            c.close();
+            return p;
+        }
+        catch (Exception e){
+            return null;
+        }
+
+    }
+
     /**
      * Writes the current steps database to the log
      */
@@ -232,28 +249,6 @@ public class Database extends SQLiteOpenHelper {
         return p;
     }
 
-    public Pair<Date, Integer> getRecordData(int startFrom) {
-        Cursor c = getReadableDatabase()
-                .query(DB_NAME, new String[]{"date, steps"}, "date > "+ Integer.toString(getRecord()), null, null, null,
-                        "date");
-        c.moveToFirst();
-        Pair<Date, Integer> p = new Pair<Date, Integer>(new Date(c.getLong(0)), c.getInt(1));
-        c.close();
-        return p;
-    }
-
-    public void saveLastUpdated(int lastUpdate) {
-        ContentValues values = new ContentValues();
-        values.put("date", lastUpdate);
-        if (getWritableDatabase().update(DB_NAME, values, "date = -9", null) == 0) {
-            values.put("date", -9);
-            getWritableDatabase().insert(DB_NAME, null, values);
-        }
-        if (BuildConfig.DEBUG) {
-            Logger.log("saving lastDateUpdated in db: " + lastUpdate);
-        }
-    }
-
     /**
      * Get the number of steps taken for a specific date.
      * <p/>
@@ -274,6 +269,7 @@ public class Database extends SQLiteOpenHelper {
         c.close();
         return re;
     }
+
 
     /**
      * Gets the last num entries in descending order of date (newest first)
@@ -320,6 +316,7 @@ public class Database extends SQLiteOpenHelper {
         c.close();
         return re;
     }
+
 
     /**
      * Removes all entries with negative values.
@@ -392,6 +389,18 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
+    public void saveLastUpdated(long lastUpdate) {
+        ContentValues values = new ContentValues();
+        values.put("date", lastUpdate);
+        if (getWritableDatabase().update(DB_NAME, values, "date = -9", null) == 0) {
+            values.put("date", -9);
+            getWritableDatabase().insert(DB_NAME, null, values);
+        }
+        if (BuildConfig.DEBUG) {
+            Logger.log("saving lastDateUpdated in db: " + lastUpdate);
+        }
+    }
+
     /**
      * Reads the latest saved value for the 'steps since boot' sensor value.
      *
@@ -407,6 +416,4 @@ public class Database extends SQLiteOpenHelper {
         int re = getSteps(-9);
         return re == Integer.MIN_VALUE ? 0 : re;
     }
-
-
 }

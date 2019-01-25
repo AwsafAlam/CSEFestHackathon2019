@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.hardware.Camera;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.Pair;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -17,11 +19,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.cuieney.progress.library.RainbowProgressBar;
 
+import io.github.utshaw.myhealth.DatabaseHR;
 import io.github.utshaw.myhealth.ImageProcessing;
+import io.github.utshaw.myhealth.model.SingletonVolley;
+import io.github.utshaw.myhealth.remote.ApiUtils;
 
 
 /**
@@ -97,6 +112,9 @@ public class HeartRateActivity extends Activity {
                 permit = false;
             }
         }
+
+        if(isNetworkAvailable(static_context))
+            sendData();
     }
 
     /**
@@ -247,6 +265,28 @@ public class HeartRateActivity extends Activity {
                 text.setText(String.valueOf(beatsAvg));
                 startTime = System.currentTimeMillis();
                 beats = 0;
+
+                camera.setPreviewCallback(null);
+                camera.stopPreview();
+                camera.release();
+                camera = null;
+
+                //DatabaseHR db = DatabaseHR.getInstance(static_context);
+                //db.insertNewDay(startTime, beatsAvg);
+                int tp = static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("points",0);
+                static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("points",tp+1).apply();
+                static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putLong("time"+Integer.toString(tp),startTime).apply();
+                static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("rate"+Integer.toString(tp),beatsAvg).apply();
+
+
+
+
+                //if(isNetworkAvailable(static_context))
+                    //sendData();
+
+
+
+
             }
             processing.set(false);
         }
@@ -343,5 +383,146 @@ public class HeartRateActivity extends Activity {
         }
 
     }//end onRequestPermissionsResult
+
+    private static void uploadData(final String timestamp, final String rate) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiUtils.BASE_URL_HR, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                //Toast.makeText(getApplicationContext(),"Response="+response,Toast.LENGTH_SHORT).show();
+                Log.e("ResponseFinal=", response);
+                String dataInfo = "";
+                //pbar.setVisibility(View.INVISIBLE);
+                if (response != null) {
+                    /*try {
+                        JSONObject jsonObj = new JSONObject(response);
+                        jSongArray = jsonObj.getJSONArray(TAG_EMPLOYEE);
+                        JSONObject oneObject = jSongArray.getJSONObject(0);
+                        sDataError = oneObject.getString(TAG_DATA_ERROR)
+                                .trim();
+                        dataInfo = oneObject.getString("dataInfo")
+                                .trim();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }*/
+                } else {
+                    Log.e("ServiceHandler", "Couldn't get any data from the url");
+                }
+
+                /*if (sDataError.equals("YES")) {
+                    Toast.makeText(getApplicationContext(), "Problem Occurred. Please try again Later", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    Log.e("Hello Masud,","You are successful");
+                    JSONObject updatedJson = new JSONObject();
+
+                    try {
+                        if(dataInfo.length()>15)
+                            oneObject.put("profilePic","http://joybanglabd.org/uploads/"+dataInfo);
+                        else
+                            oneObject.put("profilePic",sProfilepic);
+                        JSONArray oneArray = new JSONArray();
+                        oneArray.put(oneObject);
+
+                        updatedJson.put("clientDetalstInfo", (Object) oneArray);
+                    }catch(JSONException e){
+
+                    }
+                    Log.e("updatedJson",updatedJson.toString());
+
+                    if(updatedJson.toString().length()>0) {
+                        sharedpreferences = getSharedPreferences(PublicVariableLink.sharedStorage,
+                                Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString("ezComUsersInfo", updatedJson.toString());
+                        editor.commit();
+                        Intent intent = new Intent(EmployeeDetailEdit.this, EmployeeDetail.class);
+                        startActivity(intent);
+                    }
+
+                }*/
+
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(static_context, "Server Error, Please try again later", Toast.LENGTH_LONG).show();
+                //Log.e("ResponseError=", error + "");
+                //pbar.setVisibility(View.INVISIBLE);
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                //oneObject = new JSONObject();
+                params.put("time",timestamp);
+                params.put("heartRate",rate);
+
+
+
+
+                //params.put(TAG_JOIN_DATE, sJoinDate);
+                //params.put(TAG_JOIN_DATE_IN_CURRENT_POSITION, sJoinDateInCurPosition);
+//                params.put("mobile", mobile);
+//                params.put("token", token);
+//                Log.e("Service",mobile + "next");
+
+
+                return params;
+            }
+        };
+
+        SingletonVolley.getInstance(static_context).addToRequestQueue(stringRequest);
+    }
+
+    private static void sendData(){
+        DatabaseHR db = DatabaseHR.getInstance(static_context);
+
+        boolean something = false;
+        boolean more = true;
+
+        StringBuilder sbTime = new StringBuilder();
+        StringBuilder sbRate = new StringBuilder();
+        String prefix = "";
+
+        int startFrom = static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                .getInt("start",0);
+        int next = static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                .getInt("points",0);
+
+        for(int ix = startFrom; ix < next; ix ++){
+            int rate = static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                    .getInt("rate"+Integer.toString(ix),0);
+            long time = static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+                    .getLong("time"+Integer.toString(ix),0);
+
+            Date newDate = new Date(time);
+            SimpleDateFormat spf= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String date = spf.format(newDate);
+
+            sbTime.append(prefix);
+            sbRate.append(prefix);
+            prefix = ";";
+            sbTime.append(date);
+            //sbTime.append((new Date(time)).toString());
+            sbRate.append(Integer.toString(rate));
+        }
+
+        static_context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit()
+                .putInt("start",next).apply();
+
+            Log.e("HRsend",sbTime.toString() + "   "+sbRate.toString());
+            Log.e("HRsend",sbRate.toString());
+            //uploadData(sbTime.toString(), sbRate.toString());
+
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
 }
 

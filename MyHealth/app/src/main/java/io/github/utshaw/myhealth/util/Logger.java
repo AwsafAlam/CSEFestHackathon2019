@@ -18,7 +18,7 @@ public abstract class Logger {
 
     private static FileWriter fw;
     private static final Date date = new Date();
-    private final static String APP = "Pedometer";
+    private final static String APP = "HealthyApp";
 
     public static void log(Throwable ex) {
         log(ex.getMessage());

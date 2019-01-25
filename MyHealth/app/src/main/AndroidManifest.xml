@@ -53,7 +53,7 @@
 
         <service android:name=".SensorListener" />
 
-        <activity android:name="io.github.utshaw.myhealth.StepsActivity"></activity>
+        <activity android:name=".views.StepsActivity"></activity>
 
         <activity android:name=".views.HeartRateActivity" />
         <activity android:name=".BasicProfileActivity" />
