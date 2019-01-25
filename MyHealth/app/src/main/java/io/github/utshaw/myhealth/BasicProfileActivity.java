@@ -1,6 +1,7 @@
 package io.github.utshaw.myhealth;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,9 @@ public class BasicProfileActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN_REQUEST = 1;
 
     private String mobile, token;
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
+
 
     String mUserName;
 
@@ -63,6 +67,14 @@ public class BasicProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(weight) && !TextUtils.isEmpty(height)){
                     uploadData();
+
+                    prefs = getSharedPreferences("body", MODE_PRIVATE);
+                    editor = prefs.edit();
+                    editor.putString("NAME", name).commit();
+                    editor.putString("AGE", age).commit();
+                    editor.putString("WEIGHT", weight).commit();
+                    editor.putString("HEIGHT", height).commit();
+
 
                 }
                 startActivity(new Intent(BasicProfileActivity.this, MainActivity.class));

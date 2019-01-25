@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.utshaw.myhealth.CalorieActivity;
 import io.github.utshaw.myhealth.DatabaseHR;
 import io.github.utshaw.myhealth.R;
 import io.github.utshaw.myhealth.RecordActivity;
@@ -113,14 +114,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cardView4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                    startActivity(new Intent(MainActivity.this, CalorieActivity.class));
             }
         });
 
         cardView5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Main
             }
         });
 
