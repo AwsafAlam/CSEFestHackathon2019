@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.utshaw.myhealth.R;
+import io.github.utshaw.myhealth.RecordActivity;
 import io.github.utshaw.myhealth.SensorListener;
 import io.github.utshaw.myhealth.model.SingletonVolley;
 import io.github.utshaw.myhealth.remote.ApiUtils;
@@ -143,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.st_class) {
 //            startActivity(new Intent(MainActivity.this, CallingActivity.class));
+            startActivity(new Intent(MainActivity.this, RecordActivity.class));
         }else if(id == R.id.st_payment){
 
         }else if(id == R.id.st_profile){
