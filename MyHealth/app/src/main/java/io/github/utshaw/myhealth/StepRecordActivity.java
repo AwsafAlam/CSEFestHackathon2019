@@ -1,8 +1,8 @@
 package io.github.utshaw.myhealth;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -20,9 +20,8 @@ import java.util.Map;
 
 import io.github.utshaw.myhealth.model.SingletonVolley;
 import io.github.utshaw.myhealth.remote.ApiUtils;
-import io.github.utshaw.myhealth.views.MainActivity;
 
-public class RecordActivity extends AppCompatActivity {
+public class StepRecordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,7 @@ public class RecordActivity extends AppCompatActivity {
         ArrayList<Record> records = new ArrayList<Record>();
         //records.add(new Record("Donut", "1.6"));
 
-        /*int next = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+        int next = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
                 .getInt("steppoints",0);
 
         int day_total = 0;
@@ -46,23 +45,9 @@ public class RecordActivity extends AppCompatActivity {
             String date = spf.format(newDate);
 
             records.add(new Record(date, Integer.toString(rate)));
-        }*/
-
-        int next = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
-                .getInt("points",0);
-
-        int day_total = 0;
-        for(int ix = next - 1; ix >0; ix --) {
-            int rate = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
-                    .getInt("rate" + Integer.toString(ix), 0);
-            long timePrevious = getSharedPreferences("pedometer", Context.MODE_PRIVATE)
-                    .getLong("time"+Integer.toString(ix),0);
-            Date newDate = new Date(timePrevious);
-            SimpleDateFormat spf= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String date = spf.format(newDate);
-
-            records.add(new Record(date, Integer.toString(rate)));
         }
+
+
 
 
 
@@ -105,7 +90,7 @@ public class RecordActivity extends AppCompatActivity {
             }
         };
 
-        SingletonVolley.getInstance(RecordActivity.this).addToRequestQueue(stringRequest);
+        SingletonVolley.getInstance(StepRecordActivity.this).addToRequestQueue(stringRequest);
     }
 
 
