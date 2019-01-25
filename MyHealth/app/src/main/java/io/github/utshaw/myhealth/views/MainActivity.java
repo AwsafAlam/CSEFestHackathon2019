@@ -121,9 +121,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cardView5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Main
-            }
-        });
+                startActivity(new Intent(MainActivity.this, CalorieActivity.class));
+
+            });
 
 
 
