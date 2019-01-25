@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,8 +36,6 @@ public class BasicProfileActivity extends AppCompatActivity {
     EditText eTxtName, eTxtAge, eTxtWeight, eTxtHeight;
     Button btn;
     private static final int RC_SIGN_IN_REQUEST = 1;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private String mobile, token;
 
@@ -53,45 +52,25 @@ public class BasicProfileActivity extends AppCompatActivity {
         eTxtWeight = findViewById(R.id.weight);
         eTxtHeight = findViewById(R.id.height);
 
+        final String name, age, weight, height;
+        name = eTxtName.getText().toString();
+        age = eTxtAge.getText().toString();
+        weight = eTxtWeight.getText().toString();
+        height = eTxtHeight.getText().toString();
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadData();
+                if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(weight) && !TextUtils.isEmpty(height)){
+                    uploadData();
+
+                }
                 startActivity(new Intent(BasicProfileActivity.this, MainActivity.class));
                 Toast.makeText(BasicProfileActivity.this, "Data uploaded", Toast.LENGTH_SHORT).show();
             }
         });
 
-        FirebaseApp.initializeApp(this);
-        mFirebaseAuth = FirebaseAuth.getInstance();
 
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    //user signed in
-
-                    onSignedInInitialize(user.getDisplayName());
-
-
-                }else{
-                    // user is signed out
-
-                    onSignedOutCleanup();
-                    List<AuthUI.IdpConfig> providers = Arrays.asList(
-                            new AuthUI.IdpConfig.PhoneBuilder().build());
-
-// Create and launch sign-in intent
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setAvailableProviders(providers)
-                                    .build(),
-                            RC_SIGN_IN_REQUEST);
-                }
-            }
-        };
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -101,9 +80,7 @@ public class BasicProfileActivity extends AppCompatActivity {
 
     private void onSignedInInitialize(String username) {
         mUserName = username;
-        mobile = mFirebaseAuth.getCurrentUser().getPhoneNumber();
-        //token = mFirebaseAuth.getAccessToken(true);
-        token = FirebaseInstanceId.getInstance().getToken();
+        token = "";
         Log.e("Service", mobile);
         //if(!TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(token)) {
         //sendPost(mobile, token);
@@ -132,17 +109,7 @@ public class BasicProfileActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-    }
 
     private void uploadData() {
 

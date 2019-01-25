@@ -16,19 +16,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.widget.TextView;
+
+import android.widget.Button;
+
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+
 import com.cuieney.progress.library.RainbowProgressBar;
-import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceId;
+
+
+
+
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -42,15 +46,20 @@ import io.github.utshaw.myhealth.R;
 import io.github.utshaw.myhealth.SensorListener;
 import io.github.utshaw.myhealth.model.SingletonVolley;
 import io.github.utshaw.myhealth.remote.ApiUtils;
+import io.github.utshaw.myhealth.util.TokenManager;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final int RC_SIGN_IN_REQUEST = 1;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
     TextView step, km;
 
     //private String mobile, token;
+
+
+
+//    private String mobile, token;
+    TokenManager tokenManager;
 
 
     CardView cardView1, cardView2, cardView3, cardView4, cardView5;
@@ -62,9 +71,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+
+
        // mAPIService = ApiUtils.getAPIService();
 
-        FirebaseApp.initializeApp(this);
 
         cardView1 = findViewById(R.id.cv_first);
         cardView2 = findViewById(R.id.cv_second);
@@ -111,35 +122,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    //user signed in
-
-                    onSignedInInitialize(user.getDisplayName());
-
-
-                }else{
-                    // user is signed out
-
-                    onSignedOutCleanup();
-                    List<AuthUI.IdpConfig> providers = Arrays.asList(
-                            new AuthUI.IdpConfig.PhoneBuilder().build());
-
-// Create and launch sign-in intent
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setAvailableProviders(providers)
-                                    .build(),
-                            RC_SIGN_IN_REQUEST);
-                }
-            }
-        };
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -229,20 +211,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private void onSignedInInitialize(String username) {
-       /*mUserName = username;
-       mobile = mFirebaseAuth.getCurrentUser().getPhoneNumber();
-      //token = mFirebaseAuth.getAccessToken(true);
-      token = FirebaseInstanceId.getInstance().getToken();
-      getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit()
-                .putString("token",token).commit();
-      Log.e("Service", mobile);
-      //if(!TextUtils.isEmpty(mobile) && !TextUtils.isEmpty(token)) {
-          //sendPost(mobile, token);
-       //}
-       uploadData();*/
-
-    }
 
     private void onSignedOutCleanup() { }
 
@@ -268,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else if(id == R.id.st_profile){
 
         }else if(id == R.id.st_signout){
-            signOutFromFirebase();
+
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -317,29 +285,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_signout) {
-            signOutFromFirebase();
+            tokenManager.deleteToken();
+            finish();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void signOutFromFirebase(){
-        AuthUI.getInstance().signOut(this);
-    }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-    }
 
     private void uploadData(final String timestamp, final String rate) {
 
