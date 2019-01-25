@@ -3,6 +3,7 @@ package io.github.utshaw.myhealth.views;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,10 @@ import io.github.utshaw.myhealth.BasicProfileActivity;
 import io.github.utshaw.myhealth.R;
 import io.github.utshaw.myhealth.model.SingletonVolley;
 import io.github.utshaw.myhealth.util.TokenManager;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -48,8 +53,11 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadData();
-                startActivity(new Intent(LoginActivity.this,BasicProfileActivity.class));
+                if(!TextUtils.isEmpty(emailTxt.getText().toString()) && !TextUtils.isEmpty(passTxt.getText().toString()))
+                    uploadData();
+                else
+                    Toast.makeText(LoginActivity.this, "Empty field", Toast.LENGTH_SHORT).show();
+                
             }
         });
     }
@@ -60,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.d("ApiCall Response=", response);
+                Log.d("Utshaw", response);
                 String dataInfo = "";
                 //pbar.setVisibility(View.INVISIBLE);
                 //TODO: save token here
@@ -69,8 +77,23 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject jsonObj = new JSONObject(response);
 
                         String token = jsonObj.getString("token");
+                        String status = jsonObj.getString("status");
+                        if(status.equals("error")){
+                            Toast.makeText(LoginActivity.this, "Wrong username or password", Toast.LENGTH_SHORT).show();
+
+                        }else if(status.equals("login")){
+
+                            Toast.makeText(LoginActivity.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
+                            tokenManager.saveToken(token);
+                            startActivity(new Intent(LoginActivity.this,MainActivity.class).addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_RESET_TASK_IF_NEEDED));
+                        }else{ // register
+
+                            Toast.makeText(LoginActivity.this, "You are new user. Complete your profile", Toast.LENGTH_SHORT).show();
+                            tokenManager.saveToken(token);
+                            startActivity(new Intent(LoginActivity.this,BasicProfileActivity.class).addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_RESET_TASK_IF_NEEDED));
+                        }
                         Log.d("ApiCalltok ", "Token : "+token);
-                        tokenManager.saveToken(token);
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();

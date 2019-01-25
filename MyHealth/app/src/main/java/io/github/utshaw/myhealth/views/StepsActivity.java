@@ -132,6 +132,6 @@ public class StepsActivity extends AppCompatActivity implements SensorEventListe
         int pauseDifference = step -
                 getSharedPreferences("pedometer", Context.MODE_PRIVATE)
                         .getInt("pauseCount", step);
-        text.setText(Integer.toString(step) + " / " +Integer.toString(saved));
+        text.setText(Integer.toString(step) + " / " +Integer.toString(saved) + Integer.toString(db.getTotalWithoutToday())+ Integer.toString(db.getDaysWithoutToday()));
     }
 }

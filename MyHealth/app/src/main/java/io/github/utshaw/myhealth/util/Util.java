@@ -21,6 +21,25 @@ public abstract class Util {
         return c.getTimeInMillis();
     }
 
+    public static long get10minutes() {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.set(Calendar.MINUTE, ((int)(Calendar.MINUTE / 10))*10);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
+    }
+
+    public static long get10minutesLater() {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.set(Calendar.MINUTE, ((int)(Calendar.MINUTE / 10))*10);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        c.add(Calendar.MINUTE, 10);
+        return c.getTimeInMillis();
+    }
+
     /**
      * @return milliseconds since 1.1.1970 for tomorrow 0:00:01 local timezone
      */

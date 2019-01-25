@@ -56,7 +56,6 @@
     </SurfaceView>
 
     <RelativeLayout
-
         android:background="#FAFAFA"
         android:layout_below="@+id/text"
         android:layout_width="match_parent"
