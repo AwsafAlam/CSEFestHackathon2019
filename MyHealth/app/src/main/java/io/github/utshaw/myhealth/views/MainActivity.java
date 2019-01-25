@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(MainActivity.this, io.github.utshaw.myhealth.views.StepsActivity.class));
 
             }
         });

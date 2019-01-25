@@ -54,7 +54,7 @@ public class SensorListener extends Service implements SensorEventListener {
 
     public final static int NOTIFICATION_ID = 1;
     private final static long MICROSECONDS_IN_ONE_MINUTE = 60000000;
-    private final static long SAVE_OFFSET_TIME = AlarmManager.INTERVAL_FIFTEEN_MINUTES /7;
+    private final static long SAVE_OFFSET_TIME = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
     private final static int SAVE_OFFSET_STEPS = 500;
 
     private static int steps;
@@ -87,7 +87,7 @@ public class SensorListener extends Service implements SensorEventListener {
     private boolean updateIfNecessary() {
         if (
                 //steps > lastSaveSteps + SAVE_OFFSET_STEPS ||
-                (steps > 0 && System.currentTimeMillis() > lastSaveTime + SAVE_OFFSET_TIME)) {
+                (steps > 0 && System.currentTimeMillis() > lastSaveTime + SAVE_OFFSET_TIME )) {
             if (BuildConfig.DEBUG) Logger.log(
                     "saving steps: steps=" + steps + " lastSave=" + lastSaveSteps +
                             " lastSaveTime=" + new Date(lastSaveTime));
