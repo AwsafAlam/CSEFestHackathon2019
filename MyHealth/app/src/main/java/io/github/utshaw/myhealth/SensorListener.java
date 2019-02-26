@@ -54,7 +54,11 @@ public class SensorListener extends Service implements SensorEventListener {
 
     public final static int NOTIFICATION_ID = 1;
     private final static long MICROSECONDS_IN_ONE_MINUTE = 60000000;
+<<<<<<< HEAD
     private final static long SAVE_OFFSET_TIME = AlarmManager.INTERVAL_FIFTEEN_MINUTES /7;
+=======
+    private final static long SAVE_OFFSET_TIME = AlarmManager.INTERVAL_FIFTEEN_MINUTES/8;
+>>>>>>> 9d6b7cf7dcd74320e2e145ad88af2799dd7c1858
     private final static int SAVE_OFFSET_STEPS = 500;
 
     private static int steps;
@@ -87,7 +91,11 @@ public class SensorListener extends Service implements SensorEventListener {
     private boolean updateIfNecessary() {
         if (
                 //steps > lastSaveSteps + SAVE_OFFSET_STEPS ||
+<<<<<<< HEAD
                 (steps > 0 && System.currentTimeMillis() > lastSaveTime + SAVE_OFFSET_TIME)) {
+=======
+                (steps > 0 && System.currentTimeMillis() > lastSaveTime + SAVE_OFFSET_TIME )) {
+>>>>>>> 9d6b7cf7dcd74320e2e145ad88af2799dd7c1858
             if (BuildConfig.DEBUG) Logger.log(
                     "saving steps: steps=" + steps + " lastSave=" + lastSaveSteps +
                             " lastSaveTime=" + new Date(lastSaveTime));
@@ -95,12 +103,25 @@ public class SensorListener extends Service implements SensorEventListener {
             if (db.getSteps(Util.get10minutes()) == Integer.MIN_VALUE) {
                 int pauseDifference = steps -
                         getSharedPreferences("pedometer", Context.MODE_PRIVATE)
+<<<<<<< HEAD
                                 .getInt("pauseCount", steps);
+=======
+                                .getInt("pauseCount", 0);
+>>>>>>> 9d6b7cf7dcd74320e2e145ad88af2799dd7c1858
                 db.insertNewDay(Util.get10minutes(), steps - pauseDifference);
                 if (pauseDifference > 0) {
                     // update pauseCount for the new day
                     getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit()
                             .putInt("pauseCount", steps).commit();
+                    getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit()
+                            .putInt("pauseCount", steps).commit();
+
+                    int tp = getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("steppoints",0);
+                    if(tp == 0)
+                        pauseDifference = 0;
+                    getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("steppoints",tp+1).apply();
+                    getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putLong("steptime"+Integer.toString(tp),System.currentTimeMillis()).apply();
+                    getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("steprate"+Integer.toString(tp),pauseDifference).apply();
                 }
 
                 if (BuildConfig.DEBUG) Logger.log(

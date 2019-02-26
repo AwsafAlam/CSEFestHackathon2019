@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -60,3 +61,78 @@
 
 
 </RelativeLayout>
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.cuieney.progress.library.RainbowProgressBar
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/progress1"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        app:progress_max="100"
+        app:progress_current="0"
+        app:progress_start_color="#ef4010"
+        app:progress_end_color="#66da43"
+        app:progress_type="circle"
+        app:progress_height="15dp"
+        app:progress_radius="48dp"
+        />
+    <ImageView
+
+        android:id="@+id/heart"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:src="@drawable/steps"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+    <TextView
+        android:id="@+id/detail"
+        android:textSize="16sp"
+        android:textColor="#16ba0d"
+        android:text="Your Daily step challege: 1000"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/progress1"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+       android:id="@+id/step"
+        android:textSize="16sp"
+        android:textColor="#16ba0d"
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/progress1"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:textSize="16sp"
+        android:text="You have crossed today"
+        android:layout_marginTop="70dp"
+        android:layout_below="@+id/progress1"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2" />
+
+
+    <TextView
+        android:id="@+id/km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:text="KM"
+        android:textColor="#f50119"
+        android:textSize="26sp" />
+
+
+
+
+</RelativeLayout>
+>>>>>>> 9d6b7cf7dcd74320e2e145ad88af2799dd7c1858
