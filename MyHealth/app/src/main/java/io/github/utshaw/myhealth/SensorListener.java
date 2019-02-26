@@ -54,7 +54,7 @@ public class SensorListener extends Service implements SensorEventListener {
 
     public final static int NOTIFICATION_ID = 1;
     private final static long MICROSECONDS_IN_ONE_MINUTE = 60000000;
-    private final static long SAVE_OFFSET_TIME = AlarmManager.INTERVAL_HOUR;
+    private final static long SAVE_OFFSET_TIME = AlarmManager.INTERVAL_FIFTEEN_MINUTES /7;
     private final static int SAVE_OFFSET_STEPS = 500;
 
     private static int steps;
@@ -85,28 +85,32 @@ public class SensorListener extends Service implements SensorEventListener {
      * @return true, if notification was updated
      */
     private boolean updateIfNecessary() {
-        if (steps > lastSaveSteps + SAVE_OFFSET_STEPS ||
+        if (
+                //steps > lastSaveSteps + SAVE_OFFSET_STEPS ||
                 (steps > 0 && System.currentTimeMillis() > lastSaveTime + SAVE_OFFSET_TIME)) {
             if (BuildConfig.DEBUG) Logger.log(
                     "saving steps: steps=" + steps + " lastSave=" + lastSaveSteps +
                             " lastSaveTime=" + new Date(lastSaveTime));
             Database db = Database.getInstance(this);
-            if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE) {
+            if (db.getSteps(Util.get10minutes()) == Integer.MIN_VALUE) {
                 int pauseDifference = steps -
                         getSharedPreferences("pedometer", Context.MODE_PRIVATE)
                                 .getInt("pauseCount", steps);
-                db.insertNewDay(Util.getToday(), steps - pauseDifference);
+                db.insertNewDay(Util.get10minutes(), steps - pauseDifference);
                 if (pauseDifference > 0) {
                     // update pauseCount for the new day
                     getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit()
                             .putInt("pauseCount", steps).commit();
                 }
+
+                if (BuildConfig.DEBUG) Logger.log(
+                        "saving steps: stepsdif=" + pauseDifference);
             }
             db.saveCurrentSteps(steps);
             db.close();
             lastSaveSteps = steps;
             lastSaveTime = System.currentTimeMillis();
-            showNotification(); // update notification
+            //showNotification(); // update notification
             //startService(new Intent(this, WidgetUpdateService.class));
 
 
@@ -140,7 +144,7 @@ public class SensorListener extends Service implements SensorEventListener {
         reRegisterSensor();
         registerBroadcastReceiver();
         if (!updateIfNecessary()) {
-            showNotification();
+            //showNotification();
         }
 
         // restart service every hour to save the current step count
@@ -249,6 +253,6 @@ public class SensorListener extends Service implements SensorEventListener {
 
         // enable batching with delay of max 5 min
         sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER),
-                SensorManager.SENSOR_DELAY_NORMAL, (int) (5 * MICROSECONDS_IN_ONE_MINUTE));
+                SensorManager.SENSOR_DELAY_NORMAL, (int) (0.5 * MICROSECONDS_IN_ONE_MINUTE));
     }
 }

@@ -7,14 +7,14 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:id="@+id/progress1"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         app:progress_max="100"
         app:progress_current="0"
-        app:progress_start_color="#00ff00"
-        app:progress_end_color="#0000ff"
+        app:progress_start_color="#ef4010"
+        app:progress_end_color="#66da43"
         app:progress_type="circle"
-        app:progress_height="5dp"
+        app:progress_height="15dp"
         app:progress_radius="48dp"
         />
     <ImageView
@@ -48,12 +48,7 @@
 
 
 
-    <SurfaceView android:id="@+id/preview"
-        android:layout_below="@+id/text"
-        android:layout_marginTop="10dp"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent">
-    </SurfaceView>
+
 
     <RelativeLayout
 
